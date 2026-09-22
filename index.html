@@ -201,7 +201,6 @@
     main { overflow-x: clip; }
     @supports not (overflow: clip) { main { overflow-x: hidden; } }
 
-    /* ============ TEMAS ============ */
     [data-theme="soft"] {
       --t-bg: #f2efe9; --t-bg-1: rgba(221, 87, 106, 0.05); --t-bg-2: rgba(16, 185, 129, 0.04);
       --t-card: #fbf9f5; --t-chip: #ebe5da; --t-input: #efebe3;
@@ -310,15 +309,6 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
 
-    .stat-bar-track {
-      height: 8px; border-radius: 9999px; overflow: hidden;
-      background: color-mix(in srgb, var(--t-accent) 12%, transparent);
-    }
-    .stat-bar-fill {
-      height: 100%; border-radius: 9999px;
-      background: linear-gradient(90deg, var(--t-accent) 0%, color-mix(in srgb, var(--t-accent) 60%, #fff) 100%);
-      transition: width .6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
     .stat-number {
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.02em;
@@ -344,7 +334,6 @@
       #installBtn:active { transform: scale(0.95); }
     }
 
-    /* Variables badge */
     .var-chip {
       display: inline-flex; align-items: center;
       padding: 4px 8px; border-radius: 8px;
@@ -359,7 +348,6 @@
     .var-chip:active { transform: scale(0.94); }
     .var-chip:hover { background: color-mix(in srgb, var(--t-accent) 25%, transparent); }
 
-    /* Empty onboarding */
     .onboard-step {
       display: flex; align-items: flex-start; gap: 12px;
       padding: 12px; border-radius: 14px;
@@ -382,7 +370,6 @@
 
   <div id="app" class="min-h-full flex flex-col max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-28 sm:pb-0">
 
-    <!-- Header -->
     <header class="sticky top-0 z-30 pt-4 pb-3 backdrop-blur-md border-b border-slate-200/70 dark:border-zinc-800/70 transition-colors">
       <div class="flex items-center justify-between gap-2 mb-2 sm:mb-3">
         <h1 id="headerTitle"
@@ -445,9 +432,6 @@
         <button data-tab="clientes" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60">
           <i data-lucide="users" class="w-4 h-4"></i><span>Clientes</span>
         </button>
-        <button data-tab="estadisticas" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60">
-          <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Estadísticas</span>
-        </button>
         <button data-tab="nueva" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap bg-gradient-to-r from-brand-600 to-brand-500 text-white hover:from-brand-700 hover:to-brand-600 shadow-lg shadow-brand-600/25 ml-auto">
           <i data-lucide="plus-circle" class="w-4 h-4"></i><span>Nueva cita</span>
         </button>
@@ -459,7 +443,6 @@
       <div id="viewsTrackWrap">
         <div id="viewsTrack">
 
-          <!-- AGENDA -->
           <div class="view-slide" data-view="agenda">
             <section id="view-agenda" class="space-y-4">
               <div id="resumenDia" class="grid grid-cols-3 gap-2"></div>
@@ -496,7 +479,6 @@
             </section>
           </div>
 
-          <!-- TODAS -->
           <div class="view-slide" data-view="todas">
             <section id="view-todas" class="space-y-5">
               <div id="filtrosTodas" class="flex flex-wrap gap-2"></div>
@@ -514,7 +496,6 @@
             </section>
           </div>
 
-          <!-- CALENDARIO -->
           <div class="view-slide" data-view="calendario">
             <section id="view-calendario" class="space-y-5">
               <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-6 border border-slate-200/80 dark:border-zinc-800 shadow-sm">
@@ -552,7 +533,6 @@
             </section>
           </div>
 
-          <!-- CLIENTES -->
           <div class="view-slide" data-view="clientes">
             <section id="view-clientes" class="space-y-4">
               <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm anim-fade-up">
@@ -598,18 +578,9 @@
             </section>
           </div>
 
-          <!-- ESTADÍSTICAS -->
-          <div class="view-slide" data-view="estadisticas">
-            <section id="view-estadisticas" class="space-y-5">
-              <div id="statsPeriodo" class="flex gap-2"></div>
-              <div id="statsContenido" class="space-y-5"></div>
-            </section>
-          </div>
-
         </div>
       </div>
 
-      <!-- NUEVA CITA -->
       <section id="view-nueva" class="hidden max-w-2xl mx-auto">
         <form id="formCita" class="bg-white dark:bg-zinc-900 rounded-2xl p-5 sm:p-7 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-5">
           <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-4">
@@ -708,9 +679,8 @@
     </footer>
   </div>
 
-  <!-- MOBILE BOTTOM NAV -->
   <nav id="mobileNav" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-zinc-800 anim-nav safe-bottom">
-    <div class="grid grid-cols-5 max-w-md mx-auto">
+    <div class="grid grid-cols-4 max-w-md mx-auto">
       <button type="button" data-tab="agenda" class="mobile-nav-btn active">
         <span class="mobile-nav-icon-bg"><i data-lucide="calendar" class="w-[18px] h-[18px]"></i></span>
         <span>Agenda</span>
@@ -727,14 +697,9 @@
         <span class="mobile-nav-icon-bg"><i data-lucide="users" class="w-[18px] h-[18px]"></i></span>
         <span>Clientes</span>
       </button>
-      <button type="button" data-tab="estadisticas" class="mobile-nav-btn">
-        <span class="mobile-nav-icon-bg"><i data-lucide="bar-chart-3" class="w-[18px] h-[18px]"></i></span>
-        <span>Stats</span>
-      </button>
     </div>
   </nav>
 
-  <!-- FAB -->
   <button id="fabNueva" type="button" aria-label="Nueva cita"
           class="sm:hidden fixed right-4 bottom-24 z-40 w-14 h-14 rounded-full bg-gradient-to-tr from-brand-600 to-brand-500 text-white shadow-2xl shadow-brand-600/40 flex items-center justify-center anim-fab">
     <i data-lucide="plus" class="w-6 h-6"></i>
@@ -747,7 +712,6 @@
 
   <div id="alphaIndex" class="alpha-index"></div>
 
-  <!-- MODAL: AJUSTES (WhatsApp + negocio) -->
   <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
     <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
       <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
@@ -818,7 +782,6 @@
     </div>
   </div>
 
-  <!-- MODAL: SERVICIOS -->
   <div id="serviceModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
     <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-3">
@@ -844,7 +807,6 @@
     </div>
   </div>
 
-  <!-- MODAL: EDITAR CITA -->
   <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
     <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
       <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
@@ -912,7 +874,6 @@
     </div>
   </div>
 
-  <!-- MODAL: FICHA DE CLIENTE -->
   <div id="clientModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
     <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
       <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
@@ -927,7 +888,6 @@
     </div>
   </div>
 
-  <!-- MODAL: CONFIRMAR BORRADO -->
   <div id="deleteModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 modal-backdrop">
     <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4">
       <div class="flex items-start gap-3">
@@ -935,7 +895,7 @@
           <i data-lucide="alert-triangle" class="w-5 h-5"></i>
         </span>
         <div>
-          <h3 class="font-bold text-slate-900 dark:text-white text-base">¿Eliminar cita?</h3>
+          <h3 id="deleteModalTitle" class="font-bold text-slate-900 dark:text-white text-base">¿Eliminar cita?</h3>
           <p id="deleteModalDesc" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Esta acción no se puede deshacer.</p>
         </div>
       </div>
@@ -948,7 +908,6 @@
     </div>
   </div>
 
-  <!-- MODO DÍA OCUPADO -->
   <div id="modoDia" class="fixed inset-0 z-[70] hidden bg-slate-50 dark:bg-zinc-950 overflow-y-auto custom-scrollbar">
     <div class="max-w-3xl mx-auto p-4 pb-28 safe-top anim-slide-up-full">
       <div class="flex items-center justify-between mb-4">
@@ -996,13 +955,8 @@
       try { if (navigator.vibrate) navigator.vibrate(pattern || 12); } catch (e) {}
     }
 
-    // ============ ESTADO VACÍO POR DEFECTO ============
     function estadoInicial() {
-      return {
-        servicios: [],
-        clientes: [],
-        citas: []
-      };
+      return { servicios: [], clientes: [], citas: [] };
     }
 
     function migrar(state) {
@@ -1034,7 +988,6 @@
       try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
     }
 
-    // Preferencias (WhatsApp template + negocio)
     function cargarPrefs() {
       var defaults = { waTemplate: DEFAULT_WA_TEMPLATE, negocio: "" };
       try {
@@ -1058,7 +1011,6 @@
     var selectedServicesMap = {};
     var vistaActual = "agenda";
     var filtroTodas = "todas";
-    var statsPeriodo = "mes";
     var editandoId = null;
     var editEstadoActual = "pendiente";
     var deleteCallback = null;
@@ -1074,9 +1026,8 @@
     var nuevaView = document.getElementById("view-nueva");
     var alphaIndexEl = document.getElementById("alphaIndex");
     var headerTitle = document.getElementById("headerTitle");
-    var statsView = document.getElementById("view-estadisticas");
 
-    var SWIPE_ORDER = ["agenda", "todas", "calendario", "clientes", "estadisticas"];
+    var SWIPE_ORDER = ["agenda", "todas", "calendario", "clientes"];
     var currentIndex = 0;
 
     var TITULOS = {
@@ -1084,7 +1035,6 @@
       todas: "Citas",
       calendario: "Calendario",
       clientes: "Clientes",
-      estadisticas: "Estadísticas",
       nueva: "Nueva cita"
     };
 
@@ -1093,7 +1043,6 @@
       return null;
     }
 
-    // ---------- Toast ----------
     function showToast(message, type, action) {
       var container = document.getElementById("toastContainer");
       var toast = document.createElement("div");
@@ -1138,7 +1087,6 @@
     }
     function hideModal(modal) { modal.classList.add("hidden"); }
 
-    // ---------- Fecha/Estado ----------
     function fechaHoraCita(c) {
       var f = c.fecha.split("-");
       var h = (c.hora || "00:00").split(":");
@@ -1193,7 +1141,6 @@
       return pad(h) + ":" + pad(m);
     }
 
-    // ---------- WhatsApp con template personalizable ----------
     function waLink(phone, message) {
       var clean = (phone || "").replace(/\D/g, "");
       if (clean.length === 10) clean = "52" + clean;
@@ -1217,7 +1164,6 @@
     }
     function recordatorioTexto(c) { return renderTemplate(prefs.waTemplate, c); }
 
-    // ---------- Theme ----------
     var TEMAS_DARK = { purple: true, red: true };
     function applyTheme(name) {
       if (!name) name = "soft";
@@ -1259,21 +1205,13 @@
       }
     });
 
-    // ---------- Ajustes: WhatsApp template + negocio ----------
     var settingsModal = document.getElementById("settingsModal");
     var settingsWa = document.getElementById("settingsWaTemplate");
     var settingsNegocio = document.getElementById("settingsNegocio");
     var waPreview = document.getElementById("waPreview");
 
     function actualizarPreviewWA() {
-      var demoCita = {
-        clienteId: "__demo__",
-        fecha: fechaISO(new Date()),
-        hora: "15:30",
-        servicio: "Corte",
-        precio: 150
-      };
-      // Simular cliente demo
+      var demoCita = { clienteId: "__demo__", fecha: fechaISO(new Date()), hora: "15:30", servicio: "Corte", precio: 150 };
       var originalClientes = state.clientes;
       var demoCli = { id: "__demo__", nombre: "Ana López", tel: "", notas: "" };
       state.clientes = originalClientes.concat([demoCli]);
@@ -1311,12 +1249,8 @@
       haptic(8);
     });
 
-    document.getElementById("btnCloseSettings").addEventListener("click", function () {
-      hideModal(settingsModal);
-    });
-    document.getElementById("btnCancelSettings").addEventListener("click", function () {
-      hideModal(settingsModal);
-    });
+    document.getElementById("btnCloseSettings").addEventListener("click", function () { hideModal(settingsModal); });
+    document.getElementById("btnCancelSettings").addEventListener("click", function () { hideModal(settingsModal); });
     document.getElementById("btnSaveSettings").addEventListener("click", function () {
       var tpl = settingsWa.value;
       if (!tpl || !tpl.trim()) tpl = DEFAULT_WA_TEMPLATE;
@@ -1329,7 +1263,6 @@
       refrescarVistaActiva();
     });
 
-    // ---------- Notificaciones ----------
     var btnNotif = document.getElementById("btnNotif");
     function notifStatus() {
       if (!("Notification" in window)) return "no-soportado";
@@ -1342,14 +1275,8 @@
     }
     btnNotif.addEventListener("click", function () {
       var s = notifStatus();
-      if (s === "no-soportado") {
-        showToast("Tu navegador no soporta notificaciones", "error");
-        return;
-      }
-      if (s === "granted") {
-        showToast("Recordatorios activados ✓", "success");
-        return;
-      }
+      if (s === "no-soportado") { showToast("Tu navegador no soporta notificaciones", "error"); return; }
+      if (s === "granted") { showToast("Recordatorios activados ✓", "success"); return; }
       Notification.requestPermission().then(function (p) {
         actualizarBotonNotif();
         if (p === "granted") showToast("Recordatorios activados ✓", "success");
@@ -1380,7 +1307,6 @@
       });
     }
 
-    // ---------- Tabs ----------
     var desktopTabs = document.querySelectorAll("nav.hidden.sm\\:flex .tab-btn");
     var mobileTabs = document.querySelectorAll("#mobileNav .mobile-nav-btn");
     document.querySelectorAll("[data-tab]").forEach(function (btn) {
@@ -1415,7 +1341,6 @@
       }
     }
 
-    // ---------- Track ----------
     function setTrackIndex(i, animate) {
       if (i < 0) i = 0;
       if (i > SWIPE_ORDER.length - 1) i = SWIPE_ORDER.length - 1;
@@ -1454,7 +1379,6 @@
 
       if (nombre === "nueva") {
         viewsTrackWrap.classList.add("hidden");
-        statsView.classList.add("hidden");
         nuevaView.classList.remove("hidden");
         nuevaView.classList.add("anim-fade-up");
       } else {
@@ -1469,7 +1393,6 @@
       if (nombre === "todas") renderTodas();
       if (nombre === "calendario") renderCalendario();
       if (nombre === "clientes") renderClientes(document.getElementById("buscarCliente").value);
-      if (nombre === "estadisticas") renderEstadisticas();
       if (nombre === "nueva") prepararFormulario();
 
       if (window.innerWidth < 640) window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1484,7 +1407,6 @@
 
     var FORMATO_LARGO = { weekday: "long", day: "numeric", month: "long" };
 
-    // ---------- Cita Card ----------
     function crearFilaCita(c, index) {
       var cli = clientePorId(c.clienteId);
       var nombreCli = cli ? cli.nombre : "Cliente no registrado";
@@ -1588,7 +1510,6 @@
       return card;
     }
 
-    // ---------- Agenda ----------
     function renderResumenDia() {
       var iso = fechaISO(diaActual);
       var citasDia = state.citas.filter(function (c) { return c.fecha === iso && c.estado !== "cancelada"; });
@@ -1628,7 +1549,6 @@
       cont.innerHTML = "";
 
       if (state.clientes.length === 0 && state.citas.length === 0) {
-        // Onboarding
         cont.innerHTML =
           '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200/80 dark:border-zinc-800 space-y-4">' +
             '<div class="text-center space-y-2">' +
@@ -1678,12 +1598,8 @@
         document.getElementById("btnOnboardServices").addEventListener("click", function () {
           renderModalServicesList(); showModal(serviceModal);
         });
-        document.getElementById("btnOnboardClients").addEventListener("click", function () {
-          irAVista("clientes");
-        });
-        document.getElementById("btnOnboardCita").addEventListener("click", function () {
-          irAVista("nueva");
-        });
+        document.getElementById("btnOnboardClients").addEventListener("click", function () { irAVista("clientes"); });
+        document.getElementById("btnOnboardCita").addEventListener("click", function () { irAVista("nueva"); });
         lucide.createIcons();
         return;
       }
@@ -1709,7 +1625,6 @@
       lucide.createIcons();
     }
 
-    // ---------- Todas ----------
     var FILTROS = [
       { id: "todas",       label: "Todas",       icon: "list-todo" },
       { id: "pendientes",  label: "Pendientes",  icon: "clock" },
@@ -1817,7 +1732,6 @@
       lucide.createIcons();
     }
 
-    // ---------- Calendario ----------
     var mesActual = new Date(diaActual.getFullYear(), diaActual.getMonth(), 1);
     var diaSeleccionado = null;
 
@@ -1913,11 +1827,9 @@
       if (vistaActual === "todas") renderTodas();
       if (vistaActual === "calendario") renderCalendario();
       if (vistaActual === "clientes") renderClientes(document.getElementById("buscarCliente").value);
-      if (vistaActual === "estadisticas") renderEstadisticas();
       lucide.createIcons();
     }
 
-    // ---------- Cambios de estado ----------
     function cambiarEstado(id, nuevoEstado) {
       var cita = null;
       state.citas.forEach(function (c) { if (c.id === id) { c.estado = nuevoEstado; cita = c; } });
@@ -1936,9 +1848,7 @@
     }
 
     function togglePago(id) {
-      state.citas.forEach(function (c) {
-        if (c.id === id) c.pagado = !c.pagado;
-      });
+      state.citas.forEach(function (c) { if (c.id === id) c.pagado = !c.pagado; });
       guardar(state);
       haptic(12);
       showToast("Estado de pago actualizado", "success");
@@ -1947,6 +1857,7 @@
 
     function pedirConfirmacionEliminar(cita) {
       var cli = clientePorId(cita.clienteId);
+      document.getElementById("deleteModalTitle").textContent = "¿Eliminar cita?";
       document.getElementById("deleteModalDesc").textContent =
         "Se eliminará la cita de " + (cli ? cli.nombre : "cliente") + " (" + formatHora12(cita.hora) + "). Esta acción no se puede deshacer.";
       deleteCallback = function () {
@@ -1954,6 +1865,30 @@
         guardar(state);
         haptic([10, 50, 10]);
         showToast("Cita eliminada", "info");
+        refrescarVistaActiva();
+      };
+      showModal(document.getElementById("deleteModal"));
+    }
+
+    // ============ NUEVO: Eliminar cliente ============
+    function pedirConfirmacionEliminarCliente(clienteId) {
+      var cli = clientePorId(clienteId);
+      if (!cli) return;
+      var citasDelCliente = state.citas.filter(function (c) { return c.clienteId === clienteId; });
+      var nCitas = citasDelCliente.length;
+      document.getElementById("deleteModalTitle").textContent = "¿Eliminar cliente?";
+      document.getElementById("deleteModalDesc").textContent = nCitas > 0
+        ? "Se eliminará a " + cli.nombre + " y también sus " + nCitas + " cita" + (nCitas === 1 ? "" : "s") + " asociada" + (nCitas === 1 ? "" : "s") + ". Esta acción no se puede deshacer."
+        : "Se eliminará a " + cli.nombre + " de tu lista de clientes. Esta acción no se puede deshacer.";
+      deleteCallback = function () {
+        state.clientes = state.clientes.filter(function (c) { return c.id !== clienteId; });
+        if (nCitas > 0) {
+          state.citas = state.citas.filter(function (c) { return c.clienteId !== clienteId; });
+        }
+        guardar(state);
+        haptic([10, 50, 10]);
+        showToast("Cliente eliminado", "info");
+        clienteActualId = null;
         refrescarVistaActiva();
       };
       showModal(document.getElementById("deleteModal"));
@@ -1975,7 +1910,6 @@
     document.getElementById("btnInvertirAgenda").addEventListener("click", function () { invertirOrdenAgenda = !invertirOrdenAgenda; actualizarBotonInvertirAgenda(); renderAgenda(); });
     document.getElementById("btnInvertirTodas").addEventListener("click", function () { invertirOrdenTodas = !invertirOrdenTodas; actualizarBotonInvertirTodas(); renderTodas(); });
 
-    // ---------- Clientes ----------
     function letraDe(nombre) {
       var c = (nombre || "").trim().charAt(0).toUpperCase();
       if (!c) return "#";
@@ -2090,7 +2024,6 @@
       buscarInput.value = ""; btnLimpiar.classList.add("hidden"); renderClientes(""); buscarInput.focus();
     });
 
-    // ---------- Ficha cliente ----------
     function abrirFichaCliente(clienteId) {
       var cli = clientePorId(clienteId);
       if (!cli) return;
@@ -2140,6 +2073,9 @@
           '<button id="btnFichaNuevaCita" type="button" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">' +
             '<i data-lucide="plus" class="w-4 h-4"></i> Nueva cita' +
           '</button>' +
+          '<button id="btnFichaEliminarCliente" type="button" title="Eliminar cliente" class="px-3.5 py-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/60 active:bg-red-200 font-semibold text-sm flex items-center justify-center">' +
+            '<i data-lucide="trash-2" class="w-4 h-4"></i>' +
+          '</button>' +
         '</div>' +
 
         '<div class="pt-4 border-t border-slate-100 dark:border-zinc-800 space-y-2">' +
@@ -2173,14 +2109,8 @@
       }
 
       var ta = document.getElementById("clienteNotas");
-      ta.addEventListener("change", function () {
-        cli.notas = ta.value.trim();
-        guardar(state);
-      });
-      ta.addEventListener("blur", function () {
-        cli.notas = ta.value.trim();
-        guardar(state);
-      });
+      ta.addEventListener("change", function () { cli.notas = ta.value.trim(); guardar(state); });
+      ta.addEventListener("blur", function () { cli.notas = ta.value.trim(); guardar(state); });
 
       document.getElementById("btnFichaNuevaCita").addEventListener("click", function () {
         hideModal(document.getElementById("clientModal"));
@@ -2192,6 +2122,12 @@
         }, 100);
       });
 
+      document.getElementById("btnFichaEliminarCliente").addEventListener("click", function () {
+        hideModal(document.getElementById("clientModal"));
+        haptic(15);
+        setTimeout(function () { pedirConfirmacionEliminarCliente(clienteId); }, 180);
+      });
+
       showModal(document.getElementById("clientModal"));
     }
 
@@ -2200,7 +2136,6 @@
       clienteActualId = null;
     });
 
-    // ---------- Importar contactos ----------
     var btnImport = document.getElementById("btnImportContacts");
     btnImport.addEventListener("click", function () {
       if (!("contacts" in navigator) || !("ContactsManager" in window)) {
@@ -2273,7 +2208,6 @@
       else inline.classList.add("hidden");
     });
 
-    // ---------- Servicios ----------
     function renderServiciosChips() {
       var cont = document.getElementById("serviciosContainer");
       cont.innerHTML = "";
@@ -2346,7 +2280,6 @@
       showToast("Servicio agregado", "success");
     });
 
-    // ---------- Nueva cita ----------
     function prepararFormulario() {
       poblarSelectClientes();
       renderServiciosChips();
@@ -2416,7 +2349,6 @@
       setTimeout(function () { irAVista("agenda"); }, 900);
     });
 
-    // ---------- Edit modal ----------
     var editModal = document.getElementById("editModal");
     function setEditEstado(estado) {
       editEstadoActual = estado;
@@ -2487,177 +2419,6 @@
       refrescarVistaActiva();
     });
 
-    // ---------- Estadísticas ----------
-    function renderEstadisticas() {
-      var periodos = [
-        { id: "semana", label: "Esta semana" },
-        { id: "mes",    label: "Este mes" },
-        { id: "anio",   label: "Este año" },
-        { id: "todo",   label: "Todo" }
-      ];
-      var contP = document.getElementById("statsPeriodo");
-      contP.innerHTML = "";
-      periodos.forEach(function (p) {
-        var active = statsPeriodo === p.id;
-        var b = document.createElement("button");
-        b.type = "button";
-        b.className = "filter-chip px-3.5 py-2 rounded-xl text-xs font-semibold border " +
-          (active ? "bg-brand-600 text-white border-brand-600 shadow-md shadow-brand-600/25"
-                  : "bg-white dark:bg-zinc-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-zinc-800 hover:border-brand-400");
-        b.textContent = p.label;
-        b.addEventListener("click", function () { statsPeriodo = p.id; haptic(8); renderEstadisticas(); });
-        contP.appendChild(b);
-      });
-
-      var hoy = new Date();
-      var inicio;
-      if (statsPeriodo === "semana") {
-        var dow = (hoy.getDay() + 6) % 7;
-        inicio = new Date(hoy); inicio.setDate(hoy.getDate() - dow); inicio.setHours(0,0,0,0);
-      } else if (statsPeriodo === "mes") {
-        inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-      } else if (statsPeriodo === "anio") {
-        inicio = new Date(hoy.getFullYear(), 0, 1);
-      } else {
-        inicio = new Date(1970, 0, 1);
-      }
-      var inicioIso = fechaISO(inicio);
-
-      var citasPer = state.citas.filter(function (c) { return c.fecha >= inicioIso; });
-      var atendidas = citasPer.filter(function (c) { return c.estado === "atendida"; });
-      var pendientes = citasPer.filter(function (c) { return getEstadoVisual(c) === "pendiente"; });
-      var canceladas = citasPer.filter(function (c) { return c.estado === "cancelada"; });
-      var ingresoTotal = atendidas.reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
-      var cobrado = atendidas.filter(function (c) { return c.pagado; }).reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
-      var porCobrar = ingresoTotal - cobrado;
-
-      var servCount = {};
-      atendidas.forEach(function (c) {
-        var key = c.servicio || "Otro";
-        servCount[key] = (servCount[key] || 0) + 1;
-      });
-      var topServs = Object.keys(servCount).map(function (k) { return { nombre: k, n: servCount[k] }; })
-        .sort(function (a, b) { return b.n - a.n; }).slice(0, 5);
-      var maxServ = topServs.length ? topServs[0].n : 1;
-
-      var cliCount = {};
-      atendidas.forEach(function (c) {
-        var cli = clientePorId(c.clienteId);
-        var key = cli ? cli.nombre : "Desconocido";
-        cliCount[key] = (cliCount[key] || 0) + Number(c.precio || 0);
-      });
-      var topCli = Object.keys(cliCount).map(function (k) { return { nombre: k, total: cliCount[k] }; })
-        .sort(function (a, b) { return b.total - a.total; }).slice(0, 5);
-      var maxCli = topCli.length ? topCli[0].total : 1;
-
-      var dias = [];
-      for (var i = 6; i >= 0; i--) {
-        var d = new Date(hoy); d.setDate(hoy.getDate() - i);
-        var iso = fechaISO(d);
-        var n = state.citas.filter(function (c) { return c.fecha === iso && c.estado !== "cancelada"; }).length;
-        dias.push({ iso: iso, label: d.toLocaleDateString("es-MX", { weekday: "short" }).replace(".", "").slice(0, 3), n: n });
-      }
-      var maxDia = Math.max.apply(null, dias.map(function (d) { return d.n; }).concat([1]));
-
-      var cont = document.getElementById("statsContenido");
-
-      if (state.citas.length === 0) {
-        cont.innerHTML = '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-10 text-center border border-slate-200/80 dark:border-zinc-800 space-y-3">' +
-          '<div class="floaty w-14 h-14 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-400 flex items-center justify-center mx-auto"><i data-lucide="bar-chart-3" class="w-6 h-6"></i></div>' +
-          '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base">Sin datos todavía</h3>' +
-          '<p class="text-xs text-slate-500 max-w-xs mx-auto">Cuando agendes y atiendas citas, aquí verás tus estadísticas, ingresos y mejores clientes.</p></div>';
-        lucide.createIcons();
-        return;
-      }
-
-      cont.innerHTML =
-        '<div class="grid grid-cols-2 gap-3">' +
-          '<div class="bg-gradient-to-tr from-brand-500 to-brand-400 text-white rounded-2xl p-4 shadow-lg shadow-brand-500/20">' +
-            '<p class="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1">Atendidas</p>' +
-            '<p class="text-3xl font-extrabold stat-number">' + atendidas.length + '</p>' +
-            '<p class="text-[11px] opacity-80 mt-1">de ' + citasPer.length + ' totales</p>' +
-          '</div>' +
-          '<div class="bg-gradient-to-tr from-emerald-600 to-emerald-500 text-white rounded-2xl p-4 shadow-lg shadow-emerald-500/20">' +
-            '<p class="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1">Ingreso</p>' +
-            '<p class="text-3xl font-extrabold stat-number">$' + ingresoTotal + '</p>' +
-            '<p class="text-[11px] opacity-80 mt-1">$' + porCobrar + ' por cobrar</p>' +
-          '</div>' +
-        '</div>' +
-
-        '<div class="grid grid-cols-3 gap-2">' +
-          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 text-center">' +
-            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Cobrado</p>' +
-            '<p class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 stat-number">$' + cobrado + '</p>' +
-          '</div>' +
-          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 text-center">' +
-            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pendientes</p>' +
-            '<p class="text-lg font-extrabold text-amber-600 dark:text-amber-400 stat-number">' + pendientes.length + '</p>' +
-          '</div>' +
-          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 text-center">' +
-            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Canceladas</p>' +
-            '<p class="text-lg font-extrabold text-slate-500 stat-number">' + canceladas.length + '</p>' +
-          '</div>' +
-        '</div>' +
-
-        '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm">' +
-          '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">' +
-            '<i data-lucide="trending-up" class="w-4 h-4 text-brand-500"></i>Últimos 7 días</h3>' +
-          '<div class="flex items-end justify-between gap-1 h-28">' +
-            dias.map(function (d) {
-              var h = Math.max(6, Math.round((d.n / maxDia) * 100));
-              return '<div class="flex-1 flex flex-col items-center gap-1.5">' +
-                '<div class="w-full flex-1 flex items-end">' +
-                  '<div class="w-full rounded-t-lg stat-bar-fill" style="height:' + h + '%"></div>' +
-                '</div>' +
-                '<p class="text-[9px] font-bold text-slate-500 uppercase">' + d.label + '</p>' +
-                '<p class="text-[10px] font-bold text-slate-700 dark:text-slate-300 stat-number">' + d.n + '</p>' +
-              '</div>';
-            }).join("") +
-          '</div>' +
-        '</div>' +
-
-        (topServs.length ? (
-          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm">' +
-            '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">' +
-              '<i data-lucide="scissors" class="w-4 h-4 text-brand-500"></i>Servicios top</h3>' +
-            '<div class="space-y-2.5">' +
-              topServs.map(function (s) {
-                var pct = Math.round((s.n / maxServ) * 100);
-                return '<div>' +
-                  '<div class="flex items-center justify-between text-xs mb-1">' +
-                    '<span class="font-semibold text-slate-700 dark:text-slate-300 truncate">' + s.nombre + '</span>' +
-                    '<span class="font-bold text-slate-900 dark:text-white stat-number">' + s.n + '</span>' +
-                  '</div>' +
-                  '<div class="stat-bar-track"><div class="stat-bar-fill" style="width:' + pct + '%"></div></div>' +
-                '</div>';
-              }).join("") +
-            '</div>' +
-          '</div>'
-        ) : "") +
-
-        (topCli.length ? (
-          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm">' +
-            '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">' +
-              '<i data-lucide="crown" class="w-4 h-4 text-amber-500"></i>Mejores clientes</h3>' +
-            '<div class="space-y-2.5">' +
-              topCli.map(function (c, i) {
-                var pct = Math.round((c.total / maxCli) * 100);
-                var medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "·";
-                return '<div>' +
-                  '<div class="flex items-center justify-between text-xs mb-1">' +
-                    '<span class="font-semibold text-slate-700 dark:text-slate-300 truncate">' + medal + ' ' + c.nombre + '</span>' +
-                    '<span class="font-bold text-slate-900 dark:text-white stat-number">$' + c.total + '</span>' +
-                  '</div>' +
-                  '<div class="stat-bar-track"><div class="stat-bar-fill" style="width:' + pct + '%"></div></div>' +
-                '</div>';
-              }).join("") +
-            '</div>' +
-          '</div>'
-        ) : "");
-      lucide.createIcons();
-    }
-
-    // ---------- Modo día ----------
     function renderModoDia() {
       document.getElementById("modoDiaFecha").textContent = conMayuscula(modoDiaFecha.toLocaleDateString("es-MX", FORMATO_LARGO));
       var iso = fechaISO(modoDiaFecha);
@@ -2717,7 +2478,6 @@
     document.getElementById("modoNextDay").addEventListener("click", function () { modoDiaFecha.setDate(modoDiaFecha.getDate() + 1); renderModoDia(); });
     document.getElementById("modoToday").addEventListener("click", function () { modoDiaFecha = new Date(); renderModoDia(); });
 
-    // ---------- Swipe ----------
     var touchActive = false, touchDecided = false, touchDir = null;
     var startX = 0, startY = 0, startTranslate = 0, trackWidth = 0;
 
@@ -2788,9 +2548,8 @@
       touchActive = false; touchDecided = false; touchDir = null;
     }, { passive: true });
 
-    // ---------- Auto-refresh + notificaciones ----------
     setInterval(function () {
-      if (vistaActual === "agenda" || vistaActual === "todas" || vistaActual === "calendario" || vistaActual === "estadisticas") {
+      if (vistaActual === "agenda" || vistaActual === "todas" || vistaActual === "calendario") {
         refrescarVistaActiva();
       }
       revisarNotificaciones();
@@ -2805,7 +2564,6 @@
       }, 200);
     });
 
-    // ---------- INIT: manifest dinámico + install prompt ----------
     (function initPWA() {
       var svgIcon = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c8384f'/><stop offset='100%25' stop-color='%23ea8390'/></linearGradient></defs><rect width='512' height='512' rx='120' fill='url(%23g)'/><text x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='300' font-family='Georgia,serif' font-weight='700' fill='white'>A</text></svg>";
       var manifest = {
@@ -2885,7 +2643,6 @@
       }
     })();
 
-    // ---------- Init ----------
     setActiveTab("agenda");
     updateHeaderTitle("agenda");
     setTrackIndex(0, false);
