@@ -1,0 +1,2900 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full" data-theme="soft">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Agenda Fácil — Gestión de Citas Premium</title>
+
+  <meta name="theme-color" content="#c8384f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Agenda Fácil">
+  <meta name="description" content="Gestión elegante de citas y clientes para profesionales.">
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c8384f'/><stop offset='100%25' stop-color='%23ea8390'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23g)'/><text x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='110' font-family='Georgia,serif' font-weight='700' fill='white'>A</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c8384f'/><stop offset='100%25' stop-color='%23ea8390'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23g)'/><text x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='110' font-family='Georgia,serif' font-weight='700' fill='white'>A</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fdf3f4', 100: '#fbe6e8', 200: '#f8d1d5', 300: '#f3b0b7',
+              400: '#ea8390', 500: '#dd576a', 600: '#c8384f', 700: '#a8293e',
+              800: '#8c2537', 900: '#772433', 950: '#420f18',
+            },
+            accent: { gold: '#D4AF37', emerald: '#10B981' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <script src="https://unpkg.com/lucide@0.451.0"></script>
+
+  <style>
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.5); }
+
+    html, body { overscroll-behavior-x: none; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.85); } 60% { opacity: 1; transform: scale(1.04); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes fadeOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(28px); } }
+    @keyframes fabIn {
+      0% { opacity: 0; transform: scale(0.4) translateY(20px); }
+      60% { opacity: 1; transform: scale(1.08) translateY(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes slideUpNav {
+      from { opacity: 0; transform: translateY(100%); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes titleFade {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUpFull {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .anim-fade-up     { animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-fade        { animation: fadeIn 0.3s ease both; }
+    .anim-scale       { animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-slide-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-pop         { animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+    .floaty           { animation: floaty 3.2s ease-in-out infinite; }
+    .anim-fab         { animation: fabIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+    .anim-nav         { animation: slideUpNav 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-title       { animation: titleFade 0.28s ease both; }
+    .anim-slide-up-full { animation: slideUpFull 0.32s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    .card-hover {
+      transition: transform .28s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow .28s ease,
+                  border-color .25s ease,
+                  background-color .25s ease;
+      will-change: transform;
+    }
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 30px -14px rgba(15, 23, 42, 0.18);
+    }
+
+    button { transition: transform .14s ease, background-color .2s ease, box-shadow .2s ease, color .2s ease, border-color .2s ease; }
+    button:active { transform: scale(0.97); }
+
+    .cita-card { position: relative; overflow: hidden; }
+    .cita-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--status-color, transparent);
+      transition: width .25s ease;
+    }
+    .cita-card:hover::before { width: 5px; }
+
+    .filter-chip { transition: transform .2s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease, color .2s ease; }
+    .filter-chip:hover { transform: translateY(-1px); }
+
+    .cal-cell { transition: transform .18s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease; }
+    .cal-cell:hover { transform: translateY(-2px) scale(1.03); }
+
+    .gradient-title {
+      background: linear-gradient(135deg, #c8384f 0%, #dd576a 50%, #ea8390 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .modal-backdrop { animation: fadeIn .22s ease both; background: rgba(15, 23, 42, 0.55); }
+
+    .toast-item { animation: slideInRight .35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .toast-item.leaving { animation: fadeOutRight .3s ease forwards; }
+
+    .tab-btn { position: relative; }
+    .tab-btn.tab-active::after {
+      content: '';
+      position: absolute; left: 50%; bottom: 2px;
+      width: 18px; height: 3px; border-radius: 9999px;
+      background: currentColor; transform: translateX(-50%); opacity: 0.75;
+      animation: popIn .35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .invert-icon { transition: transform .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .invert-icon.is-inverted { transform: rotate(180deg); }
+
+    .mobile-nav-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; padding: 8px 2px 6px; color: var(--t-muted, #94a3b8);
+      font-size: 9.5px; font-weight: 600; letter-spacing: .01em;
+      transition: color .2s ease, transform .15s ease;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-nav-btn:active { transform: scale(0.94); }
+    .mobile-nav-btn.active { color: var(--t-accent, #c8384f); }
+    .mobile-nav-icon-bg {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 26px; border-radius: 12px;
+      transition: background-color .3s cubic-bezier(0.16, 1, 0.3, 1),
+                  color .25s ease, transform .25s ease;
+    }
+    .mobile-nav-btn.active .mobile-nav-icon-bg {
+      background: color-mix(in srgb, var(--t-accent, #c8384f) 14%, transparent);
+      transform: translateY(-1px);
+    }
+
+    .safe-bottom { padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+    .safe-top    { padding-top:    calc(8px + env(safe-area-inset-top, 0px)); }
+
+    .alpha-index {
+      position: fixed; right: 4px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 1px;
+      z-index: 25; padding: 4px 2px; border-radius: 9999px;
+      background: var(--t-card, rgba(255,255,255,0.7));
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      font-size: 9px; font-weight: 700; color: var(--t-muted, #64748b);
+      opacity: 0; visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
+    }
+    .alpha-index.visible { opacity: 1; visibility: visible; }
+    .alpha-index button {
+      width: 18px; height: 16px; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-size: 9px;
+      transition: background-color .15s ease, color .15s ease, transform .15s ease;
+    }
+    .alpha-index button:active { transform: scale(1.3); }
+    @media (min-width: 640px) { .alpha-index { display: none !important; } }
+
+    .letter-header {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 8px;
+      background: linear-gradient(135deg, #c8384f, #dd576a);
+      color: #fff; font-family: "Playfair Display", serif; font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 4px 10px -4px rgba(200, 56, 79, 0.5);
+    }
+
+    #viewsTrackWrap { overflow: visible; }
+    #viewsTrack {
+      display: flex; align-items: flex-start; width: 100%;
+      will-change: transform; touch-action: pan-y;
+    }
+    .view-slide { width: 100%; flex: 0 0 100%; min-width: 100%; }
+    main { overflow-x: clip; }
+    @supports not (overflow: clip) { main { overflow-x: hidden; } }
+
+    /* ============ TEMAS ============ */
+    [data-theme="soft"] {
+      --t-bg: #f2efe9; --t-bg-1: rgba(221, 87, 106, 0.05); --t-bg-2: rgba(16, 185, 129, 0.04);
+      --t-card: #fbf9f5; --t-chip: #ebe5da; --t-input: #efebe3;
+      --t-text: #2b2620; --t-text-strong: #1a1610; --t-muted: #7d7568; --t-subtle: #a89e8f;
+      --t-border: #e4ddd0; --t-hover: rgba(0,0,0,0.045); --t-accent: #c8384f;
+    }
+    [data-theme="gray"] {
+      --t-bg: #e6e6e6; --t-bg-1: rgba(0, 0, 0, 0.05); --t-bg-2: rgba(0, 0, 0, 0.025);
+      --t-card: #f2f2f2; --t-chip: #d2d2d2; --t-input: #e0e0e0;
+      --t-text: #262626; --t-text-strong: #0a0a0a; --t-muted: #666666; --t-subtle: #999999;
+      --t-border: #cccccc; --t-hover: rgba(0,0,0,0.055); --t-accent: #404040;
+    }
+    [data-theme="purple"] {
+      --t-bg: #0c0916; --t-bg-1: rgba(139, 92, 246, 0.14); --t-bg-2: rgba(168, 85, 247, 0.10);
+      --t-card: #1a1428; --t-chip: #291f42; --t-input: #1f1830;
+      --t-text: #e9e4f5; --t-text-strong: #ffffff; --t-muted: #a89cc9; --t-subtle: #7a7096;
+      --t-border: #2e2444; --t-hover: rgba(255,255,255,0.06); --t-accent: #a855f7;
+    }
+    [data-theme="red"] {
+      --t-bg: #0a0606; --t-bg-1: rgba(220, 38, 38, 0.14); --t-bg-2: rgba(239, 68, 68, 0.10);
+      --t-card: #140f0f; --t-chip: #261a1a; --t-input: #1a1212;
+      --t-text: #f0e5e5; --t-text-strong: #ffffff; --t-muted: #b89090; --t-subtle: #8a6a6a;
+      --t-border: #2a1e1e; --t-hover: rgba(255,255,255,0.05); --t-accent: #dc2626;
+    }
+
+    html[data-theme] body {
+      background-color: var(--t-bg) !important;
+      background-image:
+        radial-gradient(circle at 0% 0%, var(--t-bg-1) 0%, transparent 42%),
+        radial-gradient(circle at 100% 100%, var(--t-bg-2) 0%, transparent 42%) !important;
+      color: var(--t-text) !important;
+      background-attachment: fixed;
+    }
+
+    html[data-theme] .bg-white,
+    html[data-theme] .bg-white\/95,
+    html[data-theme] .bg-white\/90,
+    html[data-theme] .dark .bg-zinc-900,
+    html[data-theme] .dark .bg-zinc-900\/95 { background-color: var(--t-card) !important; }
+
+    html[data-theme] .bg-slate-100,
+    html[data-theme] .bg-slate-200\/60,
+    html[data-theme] .bg-slate-200\/50,
+    html[data-theme] .dark .bg-zinc-800,
+    html[data-theme] .dark .bg-zinc-800\/60 { background-color: var(--t-chip) !important; }
+
+    html[data-theme] .bg-slate-50,
+    html[data-theme] .bg-slate-50\/85,
+    html[data-theme] .bg-slate-50\/90,
+    html[data-theme] .dark .bg-zinc-950,
+    html[data-theme] .dark .bg-zinc-950\/85 { background-color: var(--t-bg) !important; }
+
+    html[data-theme] .bg-slate-50\/50,
+    html[data-theme] .bg-slate-50\/60,
+    html[data-theme] .dark .bg-zinc-800\/30,
+    html[data-theme] .dark .bg-zinc-800\/40,
+    html[data-theme] .dark .bg-zinc-800\/50,
+    html[data-theme] input.bg-slate-50,
+    html[data-theme] textarea.bg-slate-50,
+    html[data-theme] select.bg-slate-50,
+    html[data-theme] .dark input.bg-zinc-800\/50,
+    html[data-theme] .dark textarea.bg-zinc-800\/50,
+    html[data-theme] .dark select.bg-zinc-800\/50 { background-color: var(--t-input) !important; color: var(--t-text) !important; }
+
+    html[data-theme] .border-slate-200,
+    html[data-theme] .border-slate-200\/80,
+    html[data-theme] .border-slate-200\/70,
+    html[data-theme] .border-slate-100,
+    html[data-theme] .border-slate-100\/50,
+    html[data-theme] .dark .border-zinc-800,
+    html[data-theme] .dark .border-zinc-800\/80,
+    html[data-theme] .dark .border-zinc-800\/70,
+    html[data-theme] .dark .border-zinc-700 { border-color: var(--t-border) !important; }
+
+    html[data-theme] .text-slate-900,
+    html[data-theme] .text-slate-800,
+    html[data-theme] .dark .text-white { color: var(--t-text-strong) !important; }
+
+    html[data-theme] .text-slate-700,
+    html[data-theme] .text-slate-600,
+    html[data-theme] .dark .text-slate-100,
+    html[data-theme] .dark .text-slate-200 { color: var(--t-text) !important; }
+
+    html[data-theme] .text-slate-500,
+    html[data-theme] .dark .text-slate-300,
+    html[data-theme] .dark .text-slate-400 { color: var(--t-muted) !important; }
+
+    html[data-theme] .text-slate-400,
+    html[data-theme] .dark .text-slate-500,
+    html[data-theme] .dark .text-slate-600 { color: var(--t-subtle) !important; }
+
+    [data-theme="soft"] .gradient-title { background: linear-gradient(135deg, #c8384f 0%, #dd576a 50%, #ea8390 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; }
+    [data-theme="gray"] .gradient-title { background: linear-gradient(135deg, #404040 0%, #737373 50%, #a3a3a3 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; }
+    [data-theme="purple"] .gradient-title { background: linear-gradient(135deg, #c4b5fd 0%, #a855f7 50%, #7c3aed 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; }
+    [data-theme="red"] .gradient-title { background: linear-gradient(135deg, #fecaca 0%, #ef4444 50%, #b91c1c 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; }
+
+    #themePanel { background-color: var(--t-card) !important; border-color: var(--t-border) !important; }
+    #themePanel p { color: var(--t-subtle) !important; }
+    .theme-option { transition: background-color .18s ease, outline-color .18s ease; }
+    .theme-option:hover { background-color: var(--t-hover) !important; }
+    .theme-option.active { outline: 2px solid var(--t-accent); outline-offset: 1px; }
+    .theme-option .theme-label { color: var(--t-text) !important; }
+    .theme-swatch {
+      display: inline-block; width: 26px; height: 26px; border-radius: 50%;
+      flex-shrink: 0; border: 2px solid rgba(255,255,255,0.18);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .stat-bar-track {
+      height: 8px; border-radius: 9999px; overflow: hidden;
+      background: color-mix(in srgb, var(--t-accent) 12%, transparent);
+    }
+    .stat-bar-fill {
+      height: 100%; border-radius: 9999px;
+      background: linear-gradient(90deg, var(--t-accent) 0%, color-mix(in srgb, var(--t-accent) 60%, #fff) 100%);
+      transition: width .6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stat-number {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+
+    #installBtn {
+      position: fixed; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); left: 50%;
+      transform: translateX(-50%);
+      z-index: 45;
+      padding: 12px 20px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #c8384f 0%, #dd576a 100%);
+      color: white; font-weight: 700; font-size: 14px;
+      box-shadow: 0 12px 30px -8px rgba(200, 56, 79, 0.5);
+      display: none; align-items: center; gap: 8px;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #installBtn.show { display: flex; }
+    #installBtn:active { transform: translateX(-50%) scale(0.95); }
+    @media (min-width: 640px) {
+      #installBtn { bottom: calc(24px + env(safe-area-inset-bottom, 0px)); right: 24px; left: auto; transform: none; }
+      #installBtn:active { transform: scale(0.95); }
+    }
+
+    /* Variables badge */
+    .var-chip {
+      display: inline-flex; align-items: center;
+      padding: 4px 8px; border-radius: 8px;
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 11px; font-weight: 600;
+      background: color-mix(in srgb, var(--t-accent) 15%, transparent);
+      color: var(--t-accent);
+      cursor: pointer;
+      user-select: none;
+      transition: transform .15s ease;
+    }
+    .var-chip:active { transform: scale(0.94); }
+    .var-chip:hover { background: color-mix(in srgb, var(--t-accent) 25%, transparent); }
+
+    /* Empty onboarding */
+    .onboard-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px; border-radius: 14px;
+      border: 1px solid var(--t-border);
+      background: var(--t-card);
+      transition: transform .2s ease;
+    }
+    .onboard-step:hover { transform: translateY(-2px); }
+    .onboard-num {
+      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #c8384f, #dd576a);
+      color: white; font-weight: 800; font-size: 13px;
+    }
+  </style>
+</head>
+
+<body class="h-full bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+  <div id="app" class="min-h-full flex flex-col max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-28 sm:pb-0">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 pt-4 pb-3 backdrop-blur-md border-b border-slate-200/70 dark:border-zinc-800/70 transition-colors">
+      <div class="flex items-center justify-between gap-2 mb-2 sm:mb-3">
+        <h1 id="headerTitle"
+            class="text-xl sm:text-2xl font-extrabold tracking-tight font-serif gradient-title truncate anim-title">
+          Agenda Fácil
+        </h1>
+
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btnSettings" aria-label="Ajustes"
+                  class="p-2 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+
+          <button id="btnNotif" aria-label="Recordatorios"
+                  class="p-2 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm">
+            <i data-lucide="bell" class="w-4 h-4"></i>
+          </button>
+
+          <div class="relative">
+            <button id="themeToggle" aria-label="Elegir tema"
+                    class="p-2 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm">
+              <i data-lucide="palette" class="w-4 h-4"></i>
+            </button>
+
+            <div id="themePanel" class="hidden absolute right-0 mt-2 p-3 rounded-2xl shadow-2xl border z-50 w-60">
+              <p class="text-[10px] font-bold uppercase tracking-wider mb-2">Elige un tema</p>
+              <div class="space-y-1">
+                <button type="button" data-theme-set="soft" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #f2efe9 0%, #fbf9f5 55%, #dd576a 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Suave</span>
+                </button>
+                <button type="button" data-theme-set="gray" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #e6e6e6 0%, #a3a3a3 55%, #171717 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Gris</span>
+                </button>
+                <button type="button" data-theme-set="purple" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #0c0916 0%, #8b5cf6 55%, #e9d5ff 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Morado</span>
+                </button>
+                <button type="button" data-theme-set="red" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #0a0606 0%, #dc2626 55%, #fecaca 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Rojo</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="hidden sm:flex space-x-1 overflow-x-auto custom-scrollbar pb-1 text-sm font-medium">
+        <button data-tab="agenda" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap">
+          <i data-lucide="calendar" class="w-4 h-4"></i><span>Agenda</span>
+        </button>
+        <button data-tab="todas" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60">
+          <i data-lucide="list-todo" class="w-4 h-4"></i><span>Citas</span>
+        </button>
+        <button data-tab="calendario" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60">
+          <i data-lucide="calendar-days" class="w-4 h-4"></i><span>Calendario</span>
+        </button>
+        <button data-tab="clientes" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60">
+          <i data-lucide="users" class="w-4 h-4"></i><span>Clientes</span>
+        </button>
+        <button data-tab="estadisticas" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60">
+          <i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Estadísticas</span>
+        </button>
+        <button data-tab="nueva" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap bg-gradient-to-r from-brand-600 to-brand-500 text-white hover:from-brand-700 hover:to-brand-600 shadow-lg shadow-brand-600/25 ml-auto">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i><span>Nueva cita</span>
+        </button>
+      </nav>
+    </header>
+
+    <main class="flex-1 py-6">
+
+      <div id="viewsTrackWrap">
+        <div id="viewsTrack">
+
+          <!-- AGENDA -->
+          <div class="view-slide" data-view="agenda">
+            <section id="view-agenda" class="space-y-4">
+              <div id="resumenDia" class="grid grid-cols-3 gap-2"></div>
+
+              <div class="flex items-center justify-between bg-white dark:bg-zinc-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm card-hover">
+                <button id="prevDay" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300 hover:scale-105">
+                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+
+                <div class="text-center flex-1 min-w-0">
+                  <h2 id="dayLabel" class="text-base sm:text-lg font-bold font-serif text-slate-900 dark:text-white capitalize truncate"></h2>
+                  <p id="dayCount" class="text-[11px] text-slate-400 dark:text-slate-500 font-medium"></p>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <button id="btnModoDia" title="Modo día ocupado"
+                          class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400">
+                    <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                  </button>
+                  <button id="btnInvertirAgenda" title="Invertir orden"
+                          class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400">
+                    <i data-lucide="arrow-up-down" class="w-4 h-4 invert-icon" id="iconInvertirAgenda"></i>
+                  </button>
+                  <button id="goToday" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-300 hover:bg-brand-100">
+                    Hoy
+                  </button>
+                  <button id="nextDay" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300 hover:scale-105">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div id="citasList" class="space-y-3"></div>
+            </section>
+          </div>
+
+          <!-- TODAS -->
+          <div class="view-slide" data-view="todas">
+            <section id="view-todas" class="space-y-5">
+              <div id="filtrosTodas" class="flex flex-wrap gap-2"></div>
+
+              <div class="flex items-center justify-between gap-3 px-1">
+                <p id="todasResumen" class="text-xs text-slate-500 dark:text-slate-400 font-medium"></p>
+                <button id="btnInvertirTodas"
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-slate-300 hover:border-brand-400 hover:text-brand-600 shadow-sm">
+                  <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 invert-icon" id="iconInvertirTodas"></i>
+                  <span id="btnInvertirTodasTxt">Más recientes primero</span>
+                </button>
+              </div>
+
+              <div id="todasList" class="space-y-6"></div>
+            </section>
+          </div>
+
+          <!-- CALENDARIO -->
+          <div class="view-slide" data-view="calendario">
+            <section id="view-calendario" class="space-y-5">
+              <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-6 border border-slate-200/80 dark:border-zinc-800 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 id="mesLabel" class="text-lg font-bold font-serif text-slate-900 dark:text-white capitalize"></h2>
+                  <div class="flex items-center gap-1">
+                    <button id="prevMes" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300">
+                      <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                    </button>
+                    <button id="mesHoy" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300">
+                      Mes actual
+                    </button>
+                    <button id="nextMes" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300">
+                      <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-slate-400 mb-2">
+                  <span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span>
+                </div>
+
+                <div id="calGrid" class="grid grid-cols-7 gap-1.5 sm:gap-2"></div>
+              </div>
+
+              <div id="calSeleccion" class="hidden bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-slate-200/80 dark:border-zinc-800 shadow-sm anim-fade-up">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-3 mb-3">
+                  <h3 id="calSelTitulo" class="font-serif font-bold text-slate-900 dark:text-white capitalize"></h3>
+                  <button id="calSelBtnAgendar" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-brand-600 hover:bg-brand-700 text-white flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agendar aquí
+                  </button>
+                </div>
+                <div id="calSelContenido" class="space-y-2"></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- CLIENTES -->
+          <div class="view-slide" data-view="clientes">
+            <section id="view-clientes" class="space-y-4">
+              <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm anim-fade-up">
+                <div class="flex items-center justify-between mb-3 gap-2">
+                  <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 flex items-center justify-center">
+                      <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    </span>
+                    Nuevo cliente
+                  </h3>
+                  <button id="btnImportContacts" type="button"
+                          class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                    <i data-lucide="contact" class="w-3.5 h-3.5"></i> Importar
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                  <input type="text" id="nuevoClienteNombre" placeholder="Nombre completo *" autocomplete="name"
+                         class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                  <input type="tel" id="nuevoClienteTel" placeholder="Teléfono / WhatsApp" inputmode="tel" autocomplete="tel"
+                         class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                  <button id="btnAddCliente" type="button"
+                          class="sm:col-span-1 bg-slate-900 hover:bg-slate-800 dark:bg-brand-600 dark:hover:bg-brand-700 text-white font-medium text-sm rounded-xl py-2.5 flex items-center justify-center gap-1.5">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>Guardar</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="relative anim-fade-up" style="animation-delay: 60ms">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none"></i>
+                <input type="text" id="buscarCliente" placeholder="Buscar cliente..."
+                       autocomplete="off" autocorrect="off" spellcheck="false"
+                       class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                <button id="btnLimpiarBusqueda" type="button"
+                        class="hidden absolute right-2.5 top-2.5 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-zinc-800">
+                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+
+              <p id="clientesResumen" class="text-xs text-slate-500 dark:text-slate-400 font-medium px-1 anim-fade-up" style="animation-delay: 100ms"></p>
+
+              <div id="clientesList" class="space-y-4"></div>
+            </section>
+          </div>
+
+          <!-- ESTADÍSTICAS -->
+          <div class="view-slide" data-view="estadisticas">
+            <section id="view-estadisticas" class="space-y-5">
+              <div id="statsPeriodo" class="flex gap-2"></div>
+              <div id="statsContenido" class="space-y-5"></div>
+            </section>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- NUEVA CITA -->
+      <section id="view-nueva" class="hidden max-w-2xl mx-auto">
+        <form id="formCita" class="bg-white dark:bg-zinc-900 rounded-2xl p-5 sm:p-7 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-4">
+            <div>
+              <h2 class="text-lg font-bold font-serif text-slate-900 dark:text-white">Programar Nueva Cita</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Completa la información para agendar</p>
+            </div>
+            <span class="p-2.5 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+              <i data-lucide="calendar-plus" class="w-5 h-5"></i>
+            </span>
+          </div>
+
+          <div id="avisoError" class="hidden p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs font-medium flex items-center gap-2 anim-fade-up">
+            <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+            <span id="avisoErrorTxt"></span>
+          </div>
+          <div id="avisoOk" class="hidden p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-medium flex items-center gap-2 anim-pop">
+            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0"></i>
+            <span id="avisoOkTxt"></span>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="selCliente" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Cliente *</label>
+            <select id="selCliente" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none"></select>
+          </div>
+
+          <div id="nuevoClienteInline" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-800/40 border border-slate-200 dark:border-zinc-800 anim-fade-up">
+            <div>
+              <label class="text-xs font-medium text-slate-500">Nombre completo *</label>
+              <input type="text" id="inlineNombre" placeholder="Ej. Ana María Gómez" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-medium text-slate-500">Teléfono (opcional)</label>
+              <input type="tel" id="inlineTel" placeholder="Ej. 555-0192" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="space-y-1.5">
+              <label for="inpFecha" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Fecha *</label>
+              <input type="date" id="inpFecha" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </div>
+            <div class="space-y-1.5">
+              <label for="inpHora" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Hora *</label>
+              <input type="time" id="inpHora" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </div>
+            <div class="space-y-1.5">
+              <label for="inpDuracion" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Duración</label>
+              <select id="inpDuracion" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                <option value="30">30 min</option>
+                <option value="45">45 min</option>
+                <option value="60" selected>1 hora</option>
+                <option value="90">1.5 horas</option>
+                <option value="120">2 horas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-2 border-t border-slate-100 dark:border-zinc-800 pt-4">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Servicios</label>
+              <button type="button" id="btnOpenAddServiceModal" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Administrar
+              </button>
+            </div>
+            <div id="serviciosContainer" class="flex flex-wrap gap-2 py-1">
+              <p class="text-xs text-slate-400 italic py-1">Aún no hay servicios guardados. Agrega uno con el botón "Administrar".</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div class="sm:col-span-2 space-y-1">
+                <label for="inpServicio" class="text-xs font-medium text-slate-500 dark:text-slate-400">Servicio *</label>
+                <input type="text" id="inpServicio" placeholder="Escribe o selecciona arriba..." required class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+              </div>
+              <div class="space-y-1">
+                <label for="inpPrecio" class="text-xs font-medium text-slate-500 dark:text-slate-400">Precio ($)</label>
+                <input type="number" id="inpPrecio" min="0" step="1" placeholder="0" inputmode="numeric" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none font-semibold text-brand-600 dark:text-brand-400">
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="inpNotas" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Notas</label>
+            <textarea id="inpNotas" rows="2" placeholder="Preferencias, alergias..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 text-white font-semibold text-sm shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2">
+            <i data-lucide="check" class="w-4 h-4"></i> Agendar Cita
+          </button>
+        </form>
+      </section>
+
+    </main>
+
+    <footer class="py-6 text-center text-xs text-slate-400 dark:text-slate-600 border-t border-slate-200/50 dark:border-zinc-900 mt-auto hidden sm:block">
+      Agenda Fácil &copy; Prototipo de Gestión de Citas
+    </footer>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav id="mobileNav" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-zinc-800 anim-nav safe-bottom">
+    <div class="grid grid-cols-5 max-w-md mx-auto">
+      <button type="button" data-tab="agenda" class="mobile-nav-btn active">
+        <span class="mobile-nav-icon-bg"><i data-lucide="calendar" class="w-[18px] h-[18px]"></i></span>
+        <span>Agenda</span>
+      </button>
+      <button type="button" data-tab="todas" class="mobile-nav-btn">
+        <span class="mobile-nav-icon-bg"><i data-lucide="list-todo" class="w-[18px] h-[18px]"></i></span>
+        <span>Citas</span>
+      </button>
+      <button type="button" data-tab="calendario" class="mobile-nav-btn">
+        <span class="mobile-nav-icon-bg"><i data-lucide="calendar-days" class="w-[18px] h-[18px]"></i></span>
+        <span>Mes</span>
+      </button>
+      <button type="button" data-tab="clientes" class="mobile-nav-btn">
+        <span class="mobile-nav-icon-bg"><i data-lucide="users" class="w-[18px] h-[18px]"></i></span>
+        <span>Clientes</span>
+      </button>
+      <button type="button" data-tab="estadisticas" class="mobile-nav-btn">
+        <span class="mobile-nav-icon-bg"><i data-lucide="bar-chart-3" class="w-[18px] h-[18px]"></i></span>
+        <span>Stats</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- FAB -->
+  <button id="fabNueva" type="button" aria-label="Nueva cita"
+          class="sm:hidden fixed right-4 bottom-24 z-40 w-14 h-14 rounded-full bg-gradient-to-tr from-brand-600 to-brand-500 text-white shadow-2xl shadow-brand-600/40 flex items-center justify-center anim-fab">
+    <i data-lucide="plus" class="w-6 h-6"></i>
+  </button>
+
+  <button id="installBtn" type="button">
+    <i data-lucide="download" class="w-4 h-4"></i>
+    <span>Instalar app</span>
+  </button>
+
+  <div id="alphaIndex" class="alpha-index"></div>
+
+  <!-- MODAL: AJUSTES (WhatsApp + negocio) -->
+  <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <i data-lucide="settings" class="w-4 h-4 text-brand-500"></i> Ajustes
+        </h3>
+        <button id="btnCloseSettings" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-5">
+        <div class="space-y-1.5">
+          <label for="settingsNegocio" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+            <i data-lucide="store" class="w-3.5 h-3.5"></i> Nombre del negocio
+          </label>
+          <input type="text" id="settingsNegocio" placeholder="Ej. Estética Bella"
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          <p class="text-[10px] text-slate-400">Aparecerá al final del mensaje de WhatsApp y en la app.</p>
+        </div>
+
+        <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <label for="settingsWaTemplate" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i> Mensaje de WhatsApp
+          </label>
+          <textarea id="settingsWaTemplate" rows="6"
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none font-mono text-[13px] leading-relaxed"></textarea>
+
+          <div class="pt-2">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Variables disponibles (toca para insertar)</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" class="var-chip" data-var="{nombre}">{nombre}</button>
+              <button type="button" class="var-chip" data-var="{fecha}">{fecha}</button>
+              <button type="button" class="var-chip" data-var="{hora}">{hora}</button>
+              <button type="button" class="var-chip" data-var="{servicio}">{servicio}</button>
+              <button type="button" class="var-chip" data-var="{precio}">{precio}</button>
+              <button type="button" class="var-chip" data-var="{negocio}">{negocio}</button>
+            </div>
+            <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">
+              {nombre} = primer nombre del cliente · {fecha} = fecha completa · {hora} = hora formateada · {precio} = precio con $ · {negocio} = nombre del negocio.
+            </p>
+          </div>
+
+          <button type="button" id="btnResetWaTemplate"
+                  class="text-xs font-semibold text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 flex items-center gap-1 mt-2">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restaurar mensaje por defecto
+          </button>
+        </div>
+
+        <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Vista previa
+          </p>
+          <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40">
+            <p id="waPreview" class="text-xs text-slate-700 dark:text-slate-200 whitespace-pre-wrap leading-relaxed"></p>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button id="btnCancelSettings" type="button" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-sm">
+            Cancelar
+          </button>
+          <button id="btnSaveSettings" type="button" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
+            <i data-lucide="save" class="w-4 h-4"></i> Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SERVICIOS -->
+  <div id="serviceModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-3">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-brand-500"></i> Servicios
+        </h3>
+        <button id="btnCloseServiceModal" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-xs font-semibold uppercase text-slate-400">Agregar Nuevo</h4>
+        <div class="grid grid-cols-3 gap-2">
+          <input type="text" id="newServiceName" placeholder="Nombre" class="col-span-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+          <input type="number" id="newServicePrice" placeholder="Precio" inputmode="numeric" class="col-span-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+        </div>
+        <button id="btnSaveNewService" type="button" class="w-full py-2 bg-slate-900 dark:bg-brand-600 text-white rounded-xl text-xs font-semibold">Guardar</button>
+      </div>
+      <div class="border-t border-slate-100 dark:border-zinc-800 pt-3 space-y-2">
+        <h4 class="text-xs font-semibold uppercase text-slate-400">Existentes</h4>
+        <div id="modalServicesList" class="max-h-48 overflow-y-auto custom-scrollbar space-y-1.5 pr-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR CITA -->
+  <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-4 h-4 text-brand-500"></i> Editar Cita
+        </h3>
+        <button id="btnCloseEditModal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Cliente</label>
+          <select id="editCliente" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></select>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Fecha</label>
+            <input type="date" id="editFecha" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Hora</label>
+            <input type="time" id="editHora" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Duración</label>
+            <select id="editDuracion" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+              <option value="30">30 min</option>
+              <option value="45">45 min</option>
+              <option value="60">1 hora</option>
+              <option value="90">1.5 horas</option>
+              <option value="120">2 horas</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2 space-y-1.5">
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Servicio</label>
+            <input type="text" id="editServicio" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Precio</label>
+            <input type="number" id="editPrecio" min="0" inputmode="numeric" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none font-semibold text-brand-600 dark:text-brand-400">
+          </div>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Estado</label>
+          <div class="grid grid-cols-3 gap-2" id="editEstadoGroup">
+            <button type="button" data-estado="pendiente" class="estado-btn py-2 rounded-xl text-xs font-semibold border transition">Pendiente</button>
+            <button type="button" data-estado="atendida" class="estado-btn py-2 rounded-xl text-xs font-semibold border transition">Atendida</button>
+            <button type="button" data-estado="cancelada" class="estado-btn py-2 rounded-xl text-xs font-semibold border transition">Cancelada</button>
+          </div>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Notas</label>
+          <textarea id="editNotas" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></textarea>
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button id="btnCloseEditModal2" type="button" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-sm">Cancelar</button>
+          <button id="btnGuardarEdicion" type="button" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
+            <i data-lucide="save" class="w-4 h-4"></i> Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: FICHA DE CLIENTE -->
+  <div id="clientModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <i data-lucide="user" class="w-4 h-4 text-brand-500"></i> Ficha del cliente
+        </h3>
+        <button id="btnCloseClientModal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="clientModalBody" class="p-5 space-y-4"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMAR BORRADO -->
+  <div id="deleteModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4">
+      <div class="flex items-start gap-3">
+        <span class="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 shrink-0">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </span>
+        <div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base">¿Eliminar cita?</h3>
+          <p id="deleteModalDesc" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Esta acción no se puede deshacer.</p>
+        </div>
+      </div>
+      <div class="flex gap-2 pt-1">
+        <button id="btnCancelDelete" type="button" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-sm">Cancelar</button>
+        <button id="btnConfirmDelete" type="button" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-sm flex items-center justify-center gap-2">
+          <i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO DÍA OCUPADO -->
+  <div id="modoDia" class="fixed inset-0 z-[70] hidden bg-slate-50 dark:bg-zinc-950 overflow-y-auto custom-scrollbar">
+    <div class="max-w-3xl mx-auto p-4 pb-28 safe-top anim-slide-up-full">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Modo día ocupado</p>
+          <h2 id="modoDiaFecha" class="text-2xl font-bold font-serif gradient-title capitalize"></h2>
+        </div>
+        <button id="btnCerrarModoDia" class="p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-slate-300 shadow-sm">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between bg-white dark:bg-zinc-900 p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-sm mb-4">
+        <button id="modoPrevDay" class="p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300">
+          <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+        <button id="modoToday" class="px-4 py-2 rounded-lg bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-300 font-semibold text-sm">
+          Hoy
+        </button>
+        <button id="modoNextDay" class="p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300">
+          <i data-lucide="chevron-right" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <div id="modoDiaList" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-24 sm:bottom-4 right-4 z-[100] flex flex-col gap-2 items-end pointer-events-none max-w-[90vw]"></div>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var STORE_KEY = "agenda-facil-data-v4";
+    var PREFS_KEY = "agenda-facil-prefs";
+
+    var DEFAULT_WA_TEMPLATE = "¡Hola {nombre}! 👋 Te recuerdo tu cita:\n📅 {fecha}\n🕐 {hora}\n💇 {servicio}\n\n¡Te espero! — {negocio}";
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function fechaISO(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+    function conMayuscula(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+    function haptic(pattern) {
+      try { if (navigator.vibrate) navigator.vibrate(pattern || 12); } catch (e) {}
+    }
+
+    // ============ ESTADO VACÍO POR DEFECTO ============
+    function estadoInicial() {
+      return {
+        servicios: [],
+        clientes: [],
+        citas: []
+      };
+    }
+
+    function migrar(state) {
+      if (!state || typeof state !== "object") state = estadoInicial();
+      if (!Array.isArray(state.servicios)) state.servicios = [];
+      if (!Array.isArray(state.clientes)) state.clientes = [];
+      if (!Array.isArray(state.citas)) state.citas = [];
+      state.clientes = state.clientes.map(function (c) {
+        if (typeof c.notas !== "string") c.notas = "";
+        return c;
+      });
+      state.citas = state.citas.map(function (c) {
+        if (typeof c.pagado !== "boolean") c.pagado = (c.estado === "atendida");
+        if (typeof c.duracion !== "number") c.duracion = 60;
+        return c;
+      });
+      return state;
+    }
+
+    function cargar() {
+      try {
+        var raw = localStorage.getItem(STORE_KEY);
+        if (raw) return migrar(JSON.parse(raw));
+      } catch (e) {}
+      return migrar(estadoInicial());
+    }
+
+    function guardar(data) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    // Preferencias (WhatsApp template + negocio)
+    function cargarPrefs() {
+      var defaults = { waTemplate: DEFAULT_WA_TEMPLATE, negocio: "" };
+      try {
+        var raw = localStorage.getItem(PREFS_KEY);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (typeof parsed.waTemplate !== "string" || !parsed.waTemplate.trim()) parsed.waTemplate = DEFAULT_WA_TEMPLATE;
+          if (typeof parsed.negocio !== "string") parsed.negocio = "";
+          return parsed;
+        }
+      } catch (e) {}
+      return defaults;
+    }
+    function guardarPrefs() {
+      try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch (e) {}
+    }
+
+    var state = cargar();
+    var prefs = cargarPrefs();
+    var diaActual = new Date();
+    var selectedServicesMap = {};
+    var vistaActual = "agenda";
+    var filtroTodas = "todas";
+    var statsPeriodo = "mes";
+    var editandoId = null;
+    var editEstadoActual = "pendiente";
+    var deleteCallback = null;
+    var clienteActualId = null;
+    var modoDiaFecha = new Date();
+    var notifiedIds = {};
+
+    var invertirOrdenAgenda = false;
+    var invertirOrdenTodas  = true;
+
+    var viewsTrack = document.getElementById("viewsTrack");
+    var viewsTrackWrap = document.getElementById("viewsTrackWrap");
+    var nuevaView = document.getElementById("view-nueva");
+    var alphaIndexEl = document.getElementById("alphaIndex");
+    var headerTitle = document.getElementById("headerTitle");
+    var statsView = document.getElementById("view-estadisticas");
+
+    var SWIPE_ORDER = ["agenda", "todas", "calendario", "clientes", "estadisticas"];
+    var currentIndex = 0;
+
+    var TITULOS = {
+      agenda: "Agenda Fácil",
+      todas: "Citas",
+      calendario: "Calendario",
+      clientes: "Clientes",
+      estadisticas: "Estadísticas",
+      nueva: "Nueva cita"
+    };
+
+    function clientePorId(id) {
+      for (var i = 0; i < state.clientes.length; i++) if (state.clientes[i].id === id) return state.clientes[i];
+      return null;
+    }
+
+    // ---------- Toast ----------
+    function showToast(message, type, action) {
+      var container = document.getElementById("toastContainer");
+      var toast = document.createElement("div");
+      var palette = {
+        success: "bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-emerald-600/30",
+        error:   "bg-gradient-to-r from-red-600 to-rose-500 shadow-red-600/30",
+        info:    "bg-gradient-to-r from-slate-900 to-slate-700 dark:from-zinc-800 dark:to-zinc-700 shadow-black/30"
+      };
+      var icon = type === "success" ? "check-circle-2" : type === "error" ? "alert-circle" : "info";
+      toast.className = "toast-item pointer-events-auto px-4 py-3 rounded-2xl text-white text-sm font-medium shadow-xl flex items-center gap-2 " + (palette[type] || palette.info);
+      toast.innerHTML = '<i data-lucide="' + icon + '" class="w-4 h-4 shrink-0"></i><span>' + message + "</span>";
+      if (action) {
+        var btn = document.createElement("button");
+        btn.className = "ml-2 px-2 py-1 rounded-lg bg-white/20 hover:bg-white/30 text-xs font-bold whitespace-nowrap";
+        btn.textContent = action.label;
+        btn.addEventListener("click", function () {
+          action.fn();
+          toast.classList.add("leaving");
+          setTimeout(function () { toast.remove(); }, 320);
+        });
+        toast.appendChild(btn);
+      }
+      container.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(function () {
+        if (toast.parentNode) {
+          toast.classList.add("leaving");
+          setTimeout(function () { if (toast.parentNode) toast.remove(); }, 320);
+        }
+      }, action ? 5500 : 2600);
+    }
+
+    function showModal(modal) {
+      modal.classList.remove("hidden");
+      var content = modal.querySelector(".anim-scale");
+      if (content) {
+        content.classList.remove("anim-scale");
+        void content.offsetWidth;
+        content.classList.add("anim-scale");
+      }
+      lucide.createIcons();
+    }
+    function hideModal(modal) { modal.classList.add("hidden"); }
+
+    // ---------- Fecha/Estado ----------
+    function fechaHoraCita(c) {
+      var f = c.fecha.split("-");
+      var h = (c.hora || "00:00").split(":");
+      return new Date(Number(f[0]), Number(f[1]) - 1, Number(f[2]), Number(h[0]) || 0, Number(h[1]) || 0, 0, 0);
+    }
+    function esPasada(c) {
+      if (c.estado !== "pendiente") return false;
+      return fechaHoraCita(c).getTime() < Date.now();
+    }
+    function getEstadoVisual(c) {
+      if (c.estado === "cancelada") return "cancelada";
+      if (c.estado === "atendida") return "atendida";
+      if (esPasada(c)) return "pasada";
+      return "pendiente";
+    }
+    function filtroAEstado(filtroId) {
+      switch (filtroId) {
+        case "pendientes": return "pendiente";
+        case "atendidas":  return "atendida";
+        case "pasadas":    return "pasada";
+        case "canceladas": return "cancelada";
+        default:           return null;
+      }
+    }
+    function getStatusBadgeHtml(c) {
+      var e = getEstadoVisual(c);
+      if (e === "pendiente") return '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/40"><span class="badge-dot bg-amber-500"></span> Pendiente</span>';
+      if (e === "atendida")  return '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/40"><span class="badge-dot bg-emerald-500"></span> Atendida</span>';
+      if (e === "pasada")    return '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200/60 dark:border-rose-800/40"><span class="badge-dot bg-rose-500"></span> Vencida</span>';
+      return '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-zinc-700"><span class="badge-dot bg-slate-400"></span> Cancelada</span>';
+    }
+    function statusColor(c) {
+      var e = getEstadoVisual(c);
+      if (e === "pendiente") return "#f59e0b";
+      if (e === "atendida")  return "#10b981";
+      if (e === "pasada")    return "#f43f5e";
+      return "#94a3b8";
+    }
+    function formatHora12(hora) {
+      var parts = (hora || "00:00").split(":");
+      var h = parseInt(parts[0], 10);
+      var m = parts[1] || "00";
+      var suf = h >= 12 ? "pm" : "am";
+      var h12 = h % 12; if (h12 === 0) h12 = 12;
+      return h12 + ":" + m + " " + suf;
+    }
+    function horaFin(c) {
+      var parts = (c.hora || "00:00").split(":");
+      var totalMin = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10) + (c.duracion || 60);
+      var h = Math.floor(totalMin / 60) % 24;
+      var m = totalMin % 60;
+      return pad(h) + ":" + pad(m);
+    }
+
+    // ---------- WhatsApp con template personalizable ----------
+    function waLink(phone, message) {
+      var clean = (phone || "").replace(/\D/g, "");
+      if (clean.length === 10) clean = "52" + clean;
+      return "https://wa.me/" + clean + "?text=" + encodeURIComponent(message);
+    }
+    function renderTemplate(template, cita) {
+      var cli = clientePorId(cita.clienteId);
+      var nombre = cli ? cli.nombre.split(" ")[0] : "";
+      var fecha = conMayuscula(new Date(cita.fecha + "T00:00:00").toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" }));
+      var hora = formatHora12(cita.hora);
+      var servicio = cita.servicio || "";
+      var precio = "$" + (cita.precio || 0);
+      var negocio = prefs.negocio && prefs.negocio.trim() ? prefs.negocio.trim() : "Agenda Fácil";
+      return (template || DEFAULT_WA_TEMPLATE)
+        .replace(/\{nombre\}/g, nombre)
+        .replace(/\{fecha\}/g, fecha)
+        .replace(/\{hora\}/g, hora)
+        .replace(/\{servicio\}/g, servicio)
+        .replace(/\{precio\}/g, precio)
+        .replace(/\{negocio\}/g, negocio);
+    }
+    function recordatorioTexto(c) { return renderTemplate(prefs.waTemplate, c); }
+
+    // ---------- Theme ----------
+    var TEMAS_DARK = { purple: true, red: true };
+    function applyTheme(name) {
+      if (!name) name = "soft";
+      document.documentElement.setAttribute("data-theme", name);
+      if (TEMAS_DARK[name]) document.documentElement.classList.add("dark");
+      else document.documentElement.classList.remove("dark");
+      localStorage.setItem("agenda_theme", name);
+      document.querySelectorAll("[data-theme-set]").forEach(function (b) {
+        if (b.getAttribute("data-theme-set") === name) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+    }
+    var savedTheme = localStorage.getItem("agenda_theme");
+    if (savedTheme === "dark") savedTheme = "purple";
+    else if (savedTheme === "light") savedTheme = "soft";
+    if (!savedTheme || ["soft", "gray", "purple", "red"].indexOf(savedTheme) === -1) {
+      savedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "purple" : "soft";
+    }
+    applyTheme(savedTheme);
+
+    var themeToggle = document.getElementById("themeToggle");
+    var themePanel = document.getElementById("themePanel");
+    themeToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      themePanel.classList.toggle("hidden");
+      lucide.createIcons();
+    });
+    document.querySelectorAll("[data-theme-set]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        applyTheme(btn.getAttribute("data-theme-set"));
+        themePanel.classList.add("hidden");
+        haptic(10);
+      });
+    });
+    document.addEventListener("click", function (e) {
+      if (!themePanel.classList.contains("hidden") &&
+          !e.target.closest("#themePanel") && !e.target.closest("#themeToggle")) {
+        themePanel.classList.add("hidden");
+      }
+    });
+
+    // ---------- Ajustes: WhatsApp template + negocio ----------
+    var settingsModal = document.getElementById("settingsModal");
+    var settingsWa = document.getElementById("settingsWaTemplate");
+    var settingsNegocio = document.getElementById("settingsNegocio");
+    var waPreview = document.getElementById("waPreview");
+
+    function actualizarPreviewWA() {
+      var demoCita = {
+        clienteId: "__demo__",
+        fecha: fechaISO(new Date()),
+        hora: "15:30",
+        servicio: "Corte",
+        precio: 150
+      };
+      // Simular cliente demo
+      var originalClientes = state.clientes;
+      var demoCli = { id: "__demo__", nombre: "Ana López", tel: "", notas: "" };
+      state.clientes = originalClientes.concat([demoCli]);
+      waPreview.textContent = renderTemplate(settingsWa.value, demoCita);
+      state.clientes = originalClientes;
+    }
+
+    document.getElementById("btnSettings").addEventListener("click", function () {
+      settingsWa.value = prefs.waTemplate;
+      settingsNegocio.value = prefs.negocio;
+      actualizarPreviewWA();
+      showModal(settingsModal);
+    });
+
+    settingsWa.addEventListener("input", actualizarPreviewWA);
+    settingsNegocio.addEventListener("input", actualizarPreviewWA);
+
+    document.querySelectorAll(".var-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var v = chip.getAttribute("data-var");
+        var ta = settingsWa;
+        var start = ta.selectionStart || ta.value.length;
+        var end = ta.selectionEnd || ta.value.length;
+        ta.value = ta.value.slice(0, start) + v + ta.value.slice(end);
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = start + v.length;
+        actualizarPreviewWA();
+        haptic(8);
+      });
+    });
+
+    document.getElementById("btnResetWaTemplate").addEventListener("click", function () {
+      settingsWa.value = DEFAULT_WA_TEMPLATE;
+      actualizarPreviewWA();
+      haptic(8);
+    });
+
+    document.getElementById("btnCloseSettings").addEventListener("click", function () {
+      hideModal(settingsModal);
+    });
+    document.getElementById("btnCancelSettings").addEventListener("click", function () {
+      hideModal(settingsModal);
+    });
+    document.getElementById("btnSaveSettings").addEventListener("click", function () {
+      var tpl = settingsWa.value;
+      if (!tpl || !tpl.trim()) tpl = DEFAULT_WA_TEMPLATE;
+      prefs.waTemplate = tpl;
+      prefs.negocio = settingsNegocio.value.trim();
+      guardarPrefs();
+      hideModal(settingsModal);
+      haptic([10, 30, 10]);
+      showToast("Ajustes guardados ✓", "success");
+      refrescarVistaActiva();
+    });
+
+    // ---------- Notificaciones ----------
+    var btnNotif = document.getElementById("btnNotif");
+    function notifStatus() {
+      if (!("Notification" in window)) return "no-soportado";
+      return Notification.permission;
+    }
+    function actualizarBotonNotif() {
+      var s = notifStatus();
+      if (s === "granted") btnNotif.classList.add("text-brand-600","dark:text-brand-400");
+      else btnNotif.classList.remove("text-brand-600","dark:text-brand-400");
+    }
+    btnNotif.addEventListener("click", function () {
+      var s = notifStatus();
+      if (s === "no-soportado") {
+        showToast("Tu navegador no soporta notificaciones", "error");
+        return;
+      }
+      if (s === "granted") {
+        showToast("Recordatorios activados ✓", "success");
+        return;
+      }
+      Notification.requestPermission().then(function (p) {
+        actualizarBotonNotif();
+        if (p === "granted") showToast("Recordatorios activados ✓", "success");
+        else showToast("No se activaron los recordatorios", "info");
+      });
+    });
+    actualizarBotonNotif();
+
+    function revisarNotificaciones() {
+      if (notifStatus() !== "granted") return;
+      var ahora = Date.now();
+      state.citas.forEach(function (c) {
+        if (c.estado !== "pendiente") return;
+        if (notifiedIds[c.id]) return;
+        var t = fechaHoraCita(c).getTime();
+        var diff = t - ahora;
+        if (diff > 0 && diff <= 15 * 60 * 1000 && diff > 14 * 60 * 1000) {
+          notifiedIds[c.id] = true;
+          var cli = clientePorId(c.clienteId);
+          try {
+            new Notification("Cita en 15 min — " + (cli ? cli.nombre : "Cliente"), {
+              body: formatHora12(c.hora) + " · " + c.servicio,
+              icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23c8384f'/></svg>",
+              tag: c.id
+            });
+          } catch (e) {}
+        }
+      });
+    }
+
+    // ---------- Tabs ----------
+    var desktopTabs = document.querySelectorAll("nav.hidden.sm\\:flex .tab-btn");
+    var mobileTabs = document.querySelectorAll("#mobileNav .mobile-nav-btn");
+    document.querySelectorAll("[data-tab]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var target = btn.getAttribute("data-tab");
+        if (target) { haptic(8); irAVista(target); }
+      });
+    });
+
+    function setActiveTab(nombre) {
+      desktopTabs.forEach(function (b) {
+        var isNew = b.getAttribute("data-tab") === "nueva";
+        var isActive = b.getAttribute("data-tab") === nombre;
+        if (isActive) {
+          b.className = isNew
+            ? "tab-btn tab-active flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap bg-gradient-to-r from-brand-700 to-brand-600 text-white shadow-lg shadow-brand-600/30 ml-auto"
+            : "tab-btn tab-active flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap bg-brand-600 text-white shadow-md shadow-brand-600/25";
+        } else {
+          b.className = isNew
+            ? "tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap bg-gradient-to-r from-brand-600 to-brand-500 text-white hover:from-brand-700 hover:to-brand-600 shadow-lg shadow-brand-600/25 ml-auto"
+            : "tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60";
+        }
+      });
+      mobileTabs.forEach(function (b) {
+        if (b.getAttribute("data-tab") === nombre) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+      var fab = document.getElementById("fabNueva");
+      if (fab) {
+        if (nombre === "nueva") fab.classList.add("hidden");
+        else fab.classList.remove("hidden");
+      }
+    }
+
+    // ---------- Track ----------
+    function setTrackIndex(i, animate) {
+      if (i < 0) i = 0;
+      if (i > SWIPE_ORDER.length - 1) i = SWIPE_ORDER.length - 1;
+      currentIndex = i;
+      if (!animate) {
+        viewsTrack.style.transition = "none";
+        viewsTrack.style.transform = "translateX(" + (-i * 100) + "%)";
+        void viewsTrack.offsetWidth;
+        viewsTrack.style.transition = "";
+      } else {
+        viewsTrack.style.transition = "transform .38s cubic-bezier(.16, 1, .3, 1)";
+        viewsTrack.style.transform = "translateX(" + (-i * 100) + "%)";
+      }
+    }
+
+    function updateHeaderTitle(nombre) {
+      var txt;
+      if (nombre === "agenda" && prefs.negocio && prefs.negocio.trim()) {
+        txt = prefs.negocio.trim();
+      } else {
+        txt = TITULOS[nombre] || "Agenda Fácil";
+      }
+      if (headerTitle.textContent === txt) return;
+      headerTitle.textContent = txt;
+      headerTitle.classList.remove("anim-title");
+      void headerTitle.offsetWidth;
+      headerTitle.classList.add("anim-title");
+    }
+
+    function irAVista(nombre) {
+      vistaActual = nombre;
+      setActiveTab(nombre);
+      updateHeaderTitle(nombre);
+
+      if (nombre !== "clientes") alphaIndexEl.classList.remove("visible");
+
+      if (nombre === "nueva") {
+        viewsTrackWrap.classList.add("hidden");
+        statsView.classList.add("hidden");
+        nuevaView.classList.remove("hidden");
+        nuevaView.classList.add("anim-fade-up");
+      } else {
+        viewsTrackWrap.classList.remove("hidden");
+        nuevaView.classList.add("hidden");
+        nuevaView.classList.remove("anim-fade-up");
+        var idx = SWIPE_ORDER.indexOf(nombre);
+        if (idx !== -1) setTrackIndex(idx, true);
+      }
+
+      if (nombre === "agenda") renderAgenda();
+      if (nombre === "todas") renderTodas();
+      if (nombre === "calendario") renderCalendario();
+      if (nombre === "clientes") renderClientes(document.getElementById("buscarCliente").value);
+      if (nombre === "estadisticas") renderEstadisticas();
+      if (nombre === "nueva") prepararFormulario();
+
+      if (window.innerWidth < 640) window.scrollTo({ top: 0, behavior: "smooth" });
+      lucide.createIcons();
+    }
+
+    document.getElementById("fabNueva").addEventListener("click", function () {
+      haptic(12);
+      fechaPendienteNueva = fechaISO(new Date());
+      irAVista("nueva");
+    });
+
+    var FORMATO_LARGO = { weekday: "long", day: "numeric", month: "long" };
+
+    // ---------- Cita Card ----------
+    function crearFilaCita(c, index) {
+      var cli = clientePorId(c.clienteId);
+      var nombreCli = cli ? cli.nombre : "Cliente no registrado";
+      var telCli = cli && cli.tel ? cli.tel : "";
+      var isCancelada = c.estado === "cancelada";
+
+      var card = document.createElement("div");
+      card.className = "cita-card card-hover anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-3";
+      card.style.setProperty("--status-color", statusColor(c));
+      if (index !== undefined) card.style.animationDelay = Math.min(index * 45, 420) + "ms";
+
+      var tituloClase = isCancelada ? "line-through opacity-60" : "";
+      var servicioClase = isCancelada ? "line-through" : "";
+
+      var pagoBadge = c.pagado
+        ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300"><i data-lucide="check" class="w-2.5 h-2.5"></i>PAGADO</span>'
+        : (c.estado === "atendida" ? '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300">POR COBRAR</span>' : "");
+
+      card.innerHTML =
+        '<div class="flex items-start justify-between gap-3">' +
+          '<div class="flex items-center gap-3 min-w-0">' +
+            '<div class="px-2.5 py-1.5 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-bold text-xs font-serif border border-brand-100 dark:border-brand-900/40 shrink-0 text-center leading-tight">' +
+              '<div class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>' + formatHora12(c.hora) + '</div>' +
+              '<div class="text-[9px] opacity-70 font-normal mt-0.5">' + (c.duracion || 60) + ' min</div>' +
+            '</div>' +
+            '<div class="min-w-0">' +
+              '<h3 class="font-bold text-slate-900 dark:text-white text-base truncate ' + tituloClase + '">' + nombreCli + '</h3>' +
+              (telCli ? '<p class="text-xs text-slate-400 flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3"></i>' + telCli + '</p>' : '') +
+            '</div>' +
+          '</div>' +
+          '<div class="shrink-0 text-right space-y-1">' +
+            getStatusBadgeHtml(c) +
+            '<div class="flex justify-end">' + pagoBadge + '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-zinc-800/80 text-xs">' +
+          '<div class="text-slate-600 dark:text-slate-300 font-medium flex items-center gap-1.5 min-w-0 ' + servicioClase + '">' +
+            '<i data-lucide="scissors" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>' +
+            '<span class="truncate">' + c.servicio + '</span>' +
+          '</div>' +
+          '<div class="font-bold text-slate-900 dark:text-white text-sm font-serif shrink-0 ml-2">$' + c.precio + '</div>' +
+        '</div>' +
+
+        (c.notas ? '<p class="text-xs italic bg-slate-50 dark:bg-zinc-800/40 p-2 rounded-lg text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-zinc-800">"' + c.notas + '"</p>' : '') +
+
+        '<div class="cita-acciones flex items-center justify-end gap-1.5 pt-1 flex-wrap"></div>';
+
+      var acciones = card.querySelector(".cita-acciones");
+
+      if (c.estado === "pendiente") {
+        var btnAtender = document.createElement("button");
+        btnAtender.type = "button";
+        btnAtender.className = "px-3 py-1.5 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1";
+        btnAtender.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Atender';
+        btnAtender.addEventListener("click", function () { cambiarEstado(c.id, "atendida"); });
+        acciones.appendChild(btnAtender);
+      }
+
+      if (c.estado !== "cancelada") {
+        var btnPago = document.createElement("button");
+        btnPago.type = "button";
+        btnPago.title = c.pagado ? "Marcar como no pagado" : "Marcar como pagado";
+        btnPago.className = "px-2.5 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1 " +
+          (c.pagado
+            ? "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200"
+            : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-400 hover:bg-amber-50 hover:text-amber-700");
+        btnPago.innerHTML = '<i data-lucide="' + (c.pagado ? "badge-check" : "banknote") + '" class="w-3.5 h-3.5"></i>';
+        btnPago.addEventListener("click", function () { togglePago(c.id); });
+        acciones.appendChild(btnPago);
+      }
+
+      if (telCli) {
+        var btnWa = document.createElement("a");
+        btnWa.href = waLink(telCli, recordatorioTexto(c));
+        btnWa.target = "_blank";
+        btnWa.rel = "noopener";
+        btnWa.className = "px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1";
+        btnWa.title = "Enviar recordatorio por WhatsApp";
+        btnWa.innerHTML = '<i data-lucide="message-circle" class="w-3.5 h-3.5"></i>';
+        btnWa.addEventListener("click", function () { haptic(12); });
+        acciones.appendChild(btnWa);
+      }
+
+      var btnEditar = document.createElement("button");
+      btnEditar.type = "button";
+      btnEditar.className = "px-2.5 py-1.5 text-xs font-medium rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-brand-50 hover:text-brand-600 text-slate-600 dark:text-slate-400 flex items-center gap-1";
+      btnEditar.title = "Editar";
+      btnEditar.innerHTML = '<i data-lucide="pencil" class="w-3.5 h-3.5"></i>';
+      btnEditar.addEventListener("click", function () { abrirEditarCita(c.id); });
+      acciones.appendChild(btnEditar);
+
+      var btnEliminar = document.createElement("button");
+      btnEliminar.type = "button";
+      btnEliminar.className = "p-1.5 rounded-xl hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400 text-slate-400";
+      btnEliminar.title = "Eliminar";
+      btnEliminar.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4"></i>';
+      btnEliminar.addEventListener("click", function () { pedirConfirmacionEliminar(c); });
+      acciones.appendChild(btnEliminar);
+
+      return card;
+    }
+
+    // ---------- Agenda ----------
+    function renderResumenDia() {
+      var iso = fechaISO(diaActual);
+      var citasDia = state.citas.filter(function (c) { return c.fecha === iso && c.estado !== "cancelada"; });
+      var total = citasDia.reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
+      var cobrado = citasDia.filter(function (c) { return c.pagado; }).reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
+      var pendiente = total - cobrado;
+
+      var cont = document.getElementById("resumenDia");
+      cont.innerHTML =
+        '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 shadow-sm text-center">' +
+          '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Citas</p>' +
+          '<p class="text-lg font-extrabold stat-number text-slate-900 dark:text-white">' + citasDia.length + '</p>' +
+        '</div>' +
+        '<div class="bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl p-3 border border-emerald-200/60 dark:border-emerald-900/40 shadow-sm text-center">' +
+          '<p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-0.5">Cobrado</p>' +
+          '<p class="text-lg font-extrabold stat-number text-emerald-700 dark:text-emerald-300">$' + cobrado + '</p>' +
+        '</div>' +
+        '<div class="bg-amber-50 dark:bg-amber-950/30 rounded-2xl p-3 border border-amber-200/60 dark:border-amber-900/40 shadow-sm text-center">' +
+          '<p class="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-0.5">Por cobrar</p>' +
+          '<p class="text-lg font-extrabold stat-number text-amber-700 dark:text-amber-300">$' + pendiente + '</p>' +
+        '</div>';
+    }
+
+    function renderAgenda() {
+      document.getElementById("dayLabel").textContent = conMayuscula(diaActual.toLocaleDateString("es-MX", FORMATO_LARGO));
+      var iso = fechaISO(diaActual);
+      var citasDia = state.citas.filter(function (c) { return c.fecha === iso; })
+        .sort(function (a, b) { return a.hora.localeCompare(b.hora); });
+      if (invertirOrdenAgenda) citasDia.reverse();
+
+      document.getElementById("dayCount").textContent =
+        citasDia.length === 0 ? "Sin citas" : (citasDia.length + (citasDia.length === 1 ? " cita" : " citas"));
+
+      renderResumenDia();
+
+      var cont = document.getElementById("citasList");
+      cont.innerHTML = "";
+
+      if (state.clientes.length === 0 && state.citas.length === 0) {
+        // Onboarding
+        cont.innerHTML =
+          '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200/80 dark:border-zinc-800 space-y-4">' +
+            '<div class="text-center space-y-2">' +
+              '<div class="floaty w-16 h-16 rounded-full bg-gradient-to-tr from-brand-100 to-brand-50 dark:from-brand-950 dark:to-zinc-900 text-brand-500 flex items-center justify-center mx-auto">' +
+                '<i data-lucide="sparkles" class="w-7 h-7"></i>' +
+              '</div>' +
+              '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-xl">¡Bienvenido a Agenda Fácil!</h3>' +
+              '<p class="text-sm text-slate-500 max-w-sm mx-auto">Empieza en 3 pasos rápidos y tendrás tu agenda funcionando en minutos.</p>' +
+            '</div>' +
+            '<div class="space-y-2">' +
+              '<div class="onboard-step">' +
+                '<div class="onboard-num">1</div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<p class="font-bold text-sm text-slate-900 dark:text-white">Agrega tus servicios</p>' +
+                  '<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Define lo que ofreces y su precio.</p>' +
+                  '<button id="btnOnboardServices" type="button" class="mt-2 px-3 py-1.5 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 text-xs font-semibold inline-flex items-center gap-1.5">' +
+                    '<i data-lucide="scissors" class="w-3.5 h-3.5"></i> Añadir servicios' +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+              '<div class="onboard-step">' +
+                '<div class="onboard-num">2</div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<p class="font-bold text-sm text-slate-900 dark:text-white">Registra un cliente</p>' +
+                  '<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Nombre y teléfono, listo.</p>' +
+                  '<button id="btnOnboardClients" type="button" class="mt-2 px-3 py-1.5 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 text-xs font-semibold inline-flex items-center gap-1.5">' +
+                    '<i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Ir a Clientes' +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+              '<div class="onboard-step">' +
+                '<div class="onboard-num">3</div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<p class="font-bold text-sm text-slate-900 dark:text-white">Agenda tu primera cita</p>' +
+                  '<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Elige fecha, hora y servicio.</p>' +
+                  '<button id="btnOnboardCita" type="button" class="mt-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-600 to-brand-500 text-white text-xs font-semibold inline-flex items-center gap-1.5 shadow-md shadow-brand-600/25">' +
+                    '<i data-lucide="plus" class="w-3.5 h-3.5"></i> Nueva cita' +
+                  '</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<p class="text-[11px] text-slate-400 text-center pt-2 border-t border-slate-100 dark:border-zinc-800">' +
+              'Tip: Personaliza el mensaje de WhatsApp en <i data-lucide="settings" class="w-3 h-3 inline"></i> Ajustes.' +
+            '</p>' +
+          '</div>';
+
+        document.getElementById("btnOnboardServices").addEventListener("click", function () {
+          renderModalServicesList(); showModal(serviceModal);
+        });
+        document.getElementById("btnOnboardClients").addEventListener("click", function () {
+          irAVista("clientes");
+        });
+        document.getElementById("btnOnboardCita").addEventListener("click", function () {
+          irAVista("nueva");
+        });
+        lucide.createIcons();
+        return;
+      }
+
+      if (citasDia.length === 0) {
+        cont.innerHTML =
+          '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-8 text-center border border-slate-200/80 dark:border-zinc-800 space-y-3">' +
+            '<div class="floaty w-14 h-14 rounded-full bg-gradient-to-tr from-brand-100 to-brand-50 dark:from-brand-950 dark:to-zinc-900 text-brand-500 flex items-center justify-center mx-auto">' +
+              '<i data-lucide="calendar-off" class="w-6 h-6"></i>' +
+            '</div>' +
+            '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-lg">Sin citas este día</h3>' +
+            '<p class="text-xs text-slate-500 max-w-xs mx-auto">Aprovecha para descansar o agendar algo nuevo.</p>' +
+            '<button id="btnEmptyNueva" type="button" class="mt-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5">' +
+              '<i data-lucide="plus" class="w-4 h-4"></i> Programar Cita' +
+            '</button>' +
+          '</div>';
+        document.getElementById("btnEmptyNueva").addEventListener("click", function () { irAVista("nueva"); });
+        lucide.createIcons();
+        return;
+      }
+
+      citasDia.forEach(function (c, i) { cont.appendChild(crearFilaCita(c, i)); });
+      lucide.createIcons();
+    }
+
+    // ---------- Todas ----------
+    var FILTROS = [
+      { id: "todas",       label: "Todas",       icon: "list-todo" },
+      { id: "pendientes",  label: "Pendientes",  icon: "clock" },
+      { id: "atendidas",   label: "Atendidas",   icon: "check-circle-2" },
+      { id: "pasadas",     label: "Pasadas",     icon: "history" },
+      { id: "canceladas",  label: "Canceladas",  icon: "x-circle" }
+    ];
+
+    function contarFiltro(id) {
+      var eo = filtroAEstado(id);
+      return state.citas.filter(function (c) {
+        if (eo === null) return true;
+        return getEstadoVisual(c) === eo;
+      }).length;
+    }
+
+    function renderFiltrosTodas() {
+      var cont = document.getElementById("filtrosTodas");
+      cont.innerHTML = "";
+      FILTROS.forEach(function (f) {
+        var count = contarFiltro(f.id);
+        var active = filtroTodas === f.id;
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "filter-chip flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border " +
+          (active
+            ? "bg-brand-600 text-white border-brand-600 shadow-md shadow-brand-600/25"
+            : "bg-white dark:bg-zinc-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-zinc-800 hover:border-brand-400 hover:text-brand-600 dark:hover:text-brand-400");
+        btn.innerHTML = '<i data-lucide="' + f.icon + '" class="w-3.5 h-3.5"></i><span>' + f.label + '</span>' +
+          '<span class="ml-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold ' + (active ? "bg-white/25 text-white" : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-slate-400") + '">' + count + '</span>';
+        btn.addEventListener("click", function () { filtroTodas = f.id; haptic(8); renderTodas(); });
+        cont.appendChild(btn);
+      });
+      lucide.createIcons();
+    }
+
+    function actualizarBotonInvertirTodas() {
+      var txt = document.getElementById("btnInvertirTodasTxt");
+      var icon = document.getElementById("iconInvertirTodas");
+      if (!txt || !icon) return;
+      if (invertirOrdenTodas) { txt.textContent = "Más antiguas primero"; icon.classList.add("is-inverted"); }
+      else { txt.textContent = "Más recientes primero"; icon.classList.remove("is-inverted"); }
+    }
+    function actualizarBotonInvertirAgenda() {
+      var icon = document.getElementById("iconInvertirAgenda");
+      if (!icon) return;
+      if (invertirOrdenAgenda) icon.classList.add("is-inverted");
+      else icon.classList.remove("is-inverted");
+    }
+
+    function renderTodas() {
+      renderFiltrosTodas();
+      actualizarBotonInvertirTodas();
+      var cont = document.getElementById("todasList");
+      cont.innerHTML = "";
+      var eo = filtroAEstado(filtroTodas);
+      var lista = state.citas.filter(function (c) {
+        if (eo === null) return true;
+        return getEstadoVisual(c) === eo;
+      });
+
+      var r = document.getElementById("todasResumen");
+      if (lista.length === 0) r.textContent = "";
+      else r.textContent = lista.length + (lista.length === 1 ? " cita" : " citas");
+
+      if (lista.length === 0) {
+        var labelActivo = FILTROS.filter(function (f) { return f.id === filtroTodas; })[0];
+        var mensaje = state.citas.length === 0
+          ? "Aún no tienes citas registradas. Agenda la primera desde el botón rojo."
+          : 'No hay citas en "' + (labelActivo ? labelActivo.label : "") + '".';
+        cont.innerHTML = '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-10 text-center border border-slate-200/80 dark:border-zinc-800 space-y-3">' +
+          '<div class="floaty w-14 h-14 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-400 flex items-center justify-center mx-auto"><i data-lucide="inbox" class="w-6 h-6"></i></div>' +
+          '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base">Sin resultados</h3>' +
+          '<p class="text-xs text-slate-500 max-w-xs mx-auto">' + mensaje + '</p></div>';
+        lucide.createIcons();
+        return;
+      }
+
+      var porFecha = {};
+      lista.forEach(function (c) { (porFecha[c.fecha] = porFecha[c.fecha] || []).push(c); });
+      var fechas = Object.keys(porFecha).sort();
+      if (invertirOrdenTodas) fechas.reverse();
+      var gi = 0;
+
+      fechas.forEach(function (fecha) {
+        var cd = porFecha[fecha].sort(function (a, b) { return a.hora.localeCompare(b.hora); });
+        if (invertirOrdenTodas) cd.reverse();
+
+        var g = document.createElement("div");
+        g.className = "space-y-3 anim-fade-up";
+        var fObj = new Date(fecha + "T00:00:00");
+        var h = document.createElement("div");
+        h.className = "flex items-center justify-between pb-2 border-b border-slate-200 dark:border-zinc-800";
+        h.innerHTML = '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base capitalize flex items-center gap-2">' +
+          '<span class="w-7 h-7 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 flex items-center justify-center"><i data-lucide="calendar" class="w-3.5 h-3.5"></i></span>' +
+          conMayuscula(fObj.toLocaleDateString("es-MX", FORMATO_LARGO)) + '</h3>' +
+          '<span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-slate-400">' + cd.length + '</span>';
+        g.appendChild(h);
+        var li = document.createElement("div");
+        li.className = "space-y-2.5";
+        cd.forEach(function (c) { li.appendChild(crearFilaCita(c, gi++)); });
+        g.appendChild(li);
+        cont.appendChild(g);
+      });
+      lucide.createIcons();
+    }
+
+    // ---------- Calendario ----------
+    var mesActual = new Date(diaActual.getFullYear(), diaActual.getMonth(), 1);
+    var diaSeleccionado = null;
+
+    function citasEnFecha(iso) { return state.citas.filter(function (c) { return c.fecha === iso; }); }
+
+    function renderCalendario() {
+      document.getElementById("mesLabel").textContent = conMayuscula(mesActual.toLocaleDateString("es-MX", { month: "long", year: "numeric" }));
+      var grid = document.getElementById("calGrid");
+      grid.innerHTML = "";
+      var primerDia = new Date(mesActual.getFullYear(), mesActual.getMonth(), 1);
+      var ultimoDia = new Date(mesActual.getFullYear(), mesActual.getMonth() + 1, 0);
+      var offset = (primerDia.getDay() + 6) % 7;
+      var hoyIso = fechaISO(new Date());
+
+      for (var i = 0; i < offset; i++) {
+        var bl = document.createElement("div");
+        bl.className = "aspect-square rounded-xl opacity-0 pointer-events-none";
+        grid.appendChild(bl);
+      }
+
+      for (var dia = 1; dia <= ultimoDia.getDate(); dia++) {
+        (function (dia) {
+          var fecha = new Date(mesActual.getFullYear(), mesActual.getMonth(), dia);
+          var iso = fechaISO(fecha);
+          var cd = citasEnFecha(iso);
+          var tiene = cd.length > 0;
+
+          var celda = document.createElement("button");
+          celda.type = "button";
+          celda.className = "cal-cell aspect-square rounded-xl border p-1 flex flex-col items-center justify-center transition relative text-xs font-semibold ";
+
+          if (iso === hoyIso) celda.className += "border-brand-500 bg-brand-50/60 dark:bg-brand-950/40 text-brand-600 dark:text-brand-300 font-bold ";
+          else if (iso === diaSeleccionado) celda.className += "border-brand-600 bg-brand-600 text-white shadow-md shadow-brand-600/25 ";
+          else celda.className += "border-slate-100 dark:border-zinc-800/80 bg-slate-50/50 dark:bg-zinc-800/30 text-slate-700 dark:text-slate-300 hover:border-brand-300 ";
+
+          var dots = "";
+          if (tiene) {
+            var max = Math.min(cd.length, 3);
+            dots = '<div class="absolute bottom-1 flex gap-0.5 justify-center">';
+            for (var k = 0; k < max; k++) dots += '<span class="w-1.5 h-1.5 rounded-full" style="background:' + statusColor(cd[k]) + '"></span>';
+            dots += "</div>";
+          }
+          celda.innerHTML = '<span>' + dia + "</span>" + dots;
+          celda.addEventListener("click", function () { diaSeleccionado = iso; renderCalendario(); mostrarSeleccionCalendario(iso); });
+          grid.appendChild(celda);
+        })(dia);
+      }
+    }
+
+    function mostrarSeleccionCalendario(iso) {
+      var panel = document.getElementById("calSeleccion");
+      var fObj = new Date(iso + "T00:00:00");
+      document.getElementById("calSelTitulo").textContent = conMayuscula(fObj.toLocaleDateString("es-MX", FORMATO_LARGO));
+      var contenido = document.getElementById("calSelContenido");
+      var cd = citasEnFecha(iso).sort(function (a, b) { return a.hora.localeCompare(b.hora); });
+
+      if (cd.length === 0) {
+        contenido.innerHTML = '<p class="text-xs text-slate-400 py-2">Sin citas para esta fecha.</p>';
+      } else {
+        contenido.innerHTML = "";
+        cd.forEach(function (c, i) {
+          var cli = clientePorId(c.clienteId);
+          var item = document.createElement("div");
+          item.className = "anim-fade-up flex items-center justify-between text-xs py-2 border-b border-slate-100 dark:border-zinc-800/60 last:border-0";
+          item.style.animationDelay = (i * 40) + "ms";
+          item.innerHTML = '<div class="flex items-center gap-2 min-w-0">' +
+            '<span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:' + statusColor(c) + '"></span>' +
+            '<span class="font-semibold text-slate-800 dark:text-slate-200 truncate">' + formatHora12(c.hora) + ' · ' + (cli ? cli.nombre : "Cliente") + '</span></div>' +
+            '<span class="text-slate-500 dark:text-slate-400 shrink-0 ml-2">' + c.servicio + ' ($' + c.precio + ')</span>';
+          contenido.appendChild(item);
+        });
+      }
+      panel.classList.remove("hidden");
+      panel.classList.remove("anim-fade-up"); void panel.offsetWidth;
+      panel.classList.add("anim-fade-up");
+      document.getElementById("calSelBtnAgendar").onclick = function () { irANuevaConFecha(iso); };
+      lucide.createIcons();
+    }
+
+    document.getElementById("prevMes").addEventListener("click", function () { mesActual.setMonth(mesActual.getMonth() - 1); renderCalendario(); });
+    document.getElementById("nextMes").addEventListener("click", function () { mesActual.setMonth(mesActual.getMonth() + 1); renderCalendario(); });
+    document.getElementById("mesHoy").addEventListener("click", function () {
+      mesActual = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+      diaSeleccionado = fechaISO(new Date());
+      renderCalendario(); mostrarSeleccionCalendario(diaSeleccionado);
+    });
+
+    var fechaPendienteNueva = null;
+    function irANuevaConFecha(iso) { fechaPendienteNueva = iso; irAVista("nueva"); }
+
+    function refrescarVistaActiva() {
+      if (vistaActual === "agenda") renderAgenda();
+      if (vistaActual === "todas") renderTodas();
+      if (vistaActual === "calendario") renderCalendario();
+      if (vistaActual === "clientes") renderClientes(document.getElementById("buscarCliente").value);
+      if (vistaActual === "estadisticas") renderEstadisticas();
+      lucide.createIcons();
+    }
+
+    // ---------- Cambios de estado ----------
+    function cambiarEstado(id, nuevoEstado) {
+      var cita = null;
+      state.citas.forEach(function (c) { if (c.id === id) { c.estado = nuevoEstado; cita = c; } });
+      guardar(state);
+      haptic(nuevoEstado === "atendida" ? [15, 40, 15] : 20);
+      if (nuevoEstado === "atendida") {
+        showToast("Cita atendida ✓", "success", {
+          label: "Cobrar",
+          fn: function () { if (cita && !cita.pagado) togglePago(cita.id); }
+        });
+      } else if (nuevoEstado === "cancelada") {
+        showToast("Cita cancelada", "info");
+      }
+      refrescarVistaActiva();
+      if (vistaActual === "calendario" && diaSeleccionado) mostrarSeleccionCalendario(diaSeleccionado);
+    }
+
+    function togglePago(id) {
+      state.citas.forEach(function (c) {
+        if (c.id === id) c.pagado = !c.pagado;
+      });
+      guardar(state);
+      haptic(12);
+      showToast("Estado de pago actualizado", "success");
+      refrescarVistaActiva();
+    }
+
+    function pedirConfirmacionEliminar(cita) {
+      var cli = clientePorId(cita.clienteId);
+      document.getElementById("deleteModalDesc").textContent =
+        "Se eliminará la cita de " + (cli ? cli.nombre : "cliente") + " (" + formatHora12(cita.hora) + "). Esta acción no se puede deshacer.";
+      deleteCallback = function () {
+        state.citas = state.citas.filter(function (c) { return c.id !== cita.id; });
+        guardar(state);
+        haptic([10, 50, 10]);
+        showToast("Cita eliminada", "info");
+        refrescarVistaActiva();
+      };
+      showModal(document.getElementById("deleteModal"));
+    }
+
+    document.getElementById("btnCancelDelete").addEventListener("click", function () {
+      hideModal(document.getElementById("deleteModal"));
+      deleteCallback = null;
+    });
+    document.getElementById("btnConfirmDelete").addEventListener("click", function () {
+      hideModal(document.getElementById("deleteModal"));
+      if (deleteCallback) deleteCallback();
+      deleteCallback = null;
+    });
+
+    document.getElementById("prevDay").addEventListener("click", function () { diaActual.setDate(diaActual.getDate() - 1); renderAgenda(); });
+    document.getElementById("nextDay").addEventListener("click", function () { diaActual.setDate(diaActual.getDate() + 1); renderAgenda(); });
+    document.getElementById("goToday").addEventListener("click", function () { diaActual = new Date(); renderAgenda(); });
+    document.getElementById("btnInvertirAgenda").addEventListener("click", function () { invertirOrdenAgenda = !invertirOrdenAgenda; actualizarBotonInvertirAgenda(); renderAgenda(); });
+    document.getElementById("btnInvertirTodas").addEventListener("click", function () { invertirOrdenTodas = !invertirOrdenTodas; actualizarBotonInvertirTodas(); renderTodas(); });
+
+    // ---------- Clientes ----------
+    function letraDe(nombre) {
+      var c = (nombre || "").trim().charAt(0).toUpperCase();
+      if (!c) return "#";
+      if (c === "Ñ") return "Ñ";
+      c = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (/^[A-Z]$/.test(c)) return c;
+      return "#";
+    }
+
+    function renderClientes(filtro) {
+      var cont = document.getElementById("clientesList");
+      cont.innerHTML = "";
+      alphaIndexEl.innerHTML = "";
+      var f = (filtro || "").trim().toLowerCase();
+      var lista = state.clientes.filter(function (c) {
+        if (!f) return true;
+        return c.nombre.toLowerCase().indexOf(f) !== -1 || (c.tel || "").indexOf(f) !== -1;
+      });
+
+      var resumen = document.getElementById("clientesResumen");
+      if (resumen) {
+        if (f) resumen.textContent = lista.length + (lista.length === 1 ? " resultado" : " resultados");
+        else resumen.textContent = state.clientes.length + (state.clientes.length === 1 ? " cliente registrado" : " clientes registrados");
+      }
+
+      if (lista.length === 0) {
+        var vacio = state.clientes.length === 0;
+        cont.innerHTML = '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-10 text-center border border-slate-200/80 dark:border-zinc-800 space-y-3">' +
+          '<div class="floaty w-14 h-14 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-400 flex items-center justify-center mx-auto"><i data-lucide="users" class="w-6 h-6"></i></div>' +
+          '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base">' + (vacio ? "Aún no hay clientes" : "Sin resultados") + '</h3>' +
+          '<p class="text-xs text-slate-500 max-w-xs mx-auto">' + (vacio ? "Agrega tu primer cliente arriba, o impórtalos desde tus contactos." : "Prueba con otra búsqueda.") + '</p></div>';
+        alphaIndexEl.classList.remove("visible");
+        lucide.createIcons();
+        return;
+      }
+
+      lista.sort(function (a, b) { return a.nombre.localeCompare(b.nombre, "es", { sensitivity: "base" }); });
+      var grupos = {};
+      lista.forEach(function (cli) { var l = letraDe(cli.nombre); (grupos[l] = grupos[l] || []).push(cli); });
+      var letras = Object.keys(grupos).sort(function (a, b) {
+        if (a === "#") return 1; if (b === "#") return -1;
+        if (a === "Ñ" && b === "N") return 1; if (b === "Ñ" && a === "N") return -1;
+        return a.localeCompare(b, "es");
+      });
+
+      letras.forEach(function (letra) {
+        var grupo = document.createElement("div");
+        grupo.className = "anim-fade-up";
+        grupo.id = "grupo-letra-" + letra;
+        var header = document.createElement("div");
+        header.className = "flex items-center gap-2 mb-2 sticky top-[60px] sm:top-[120px] z-10 py-1";
+        header.innerHTML = '<span class="letter-header">' + letra + '</span>' +
+          '<span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">' +
+          (grupos[letra].length === 1 ? "1 cliente" : grupos[letra].length + " clientes") + '</span>' +
+          '<span class="flex-1 h-px bg-slate-200 dark:bg-zinc-800"></span>';
+        grupo.appendChild(header);
+
+        var inner = document.createElement("div");
+        inner.className = "grid grid-cols-1 md:grid-cols-2 gap-2.5";
+        grupos[letra].forEach(function (cli, i) {
+          var nCitas = state.citas.filter(function (c) { return c.clienteId === cli.id; }).length;
+          var card = document.createElement("button");
+          card.type = "button";
+          card.className = "card-hover bg-white dark:bg-zinc-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm flex items-center justify-between gap-3 text-left w-full";
+          card.style.animationDelay = (i * 30) + "ms";
+          card.innerHTML = '<div class="flex items-center gap-3 min-w-0">' +
+            '<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-500 to-brand-400 text-white font-bold flex items-center justify-center font-serif shadow-md shadow-brand-500/25 shrink-0">' +
+            cli.nombre.charAt(0).toUpperCase() + '</div>' +
+            '<div class="min-w-0">' +
+            '<h4 class="font-bold text-sm text-slate-900 dark:text-white truncate">' + cli.nombre + '</h4>' +
+            '<p class="text-xs text-slate-400 flex items-center gap-1 truncate"><i data-lucide="phone" class="w-3 h-3 shrink-0"></i>' + (cli.tel || "Sin teléfono") + '</p>' +
+            '</div></div>' +
+            '<span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-slate-400 shrink-0">' + nCitas + ' citas</span>';
+          card.addEventListener("click", function () { haptic(10); abrirFichaCliente(cli.id); });
+          inner.appendChild(card);
+        });
+        grupo.appendChild(inner);
+        cont.appendChild(grupo);
+      });
+
+      buildAlphaIndex(letras);
+      lucide.createIcons();
+    }
+
+    function buildAlphaIndex(letras) {
+      alphaIndexEl.innerHTML = "";
+      if (vistaActual !== "clientes" || window.innerWidth >= 640 || letras.length <= 1) {
+        alphaIndexEl.classList.remove("visible");
+        return;
+      }
+      letras.forEach(function (letra) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = letra;
+        b.addEventListener("click", function () {
+          var t = document.getElementById("grupo-letra-" + letra);
+          if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 80, behavior: "smooth" });
+        });
+        alphaIndexEl.appendChild(b);
+      });
+      alphaIndexEl.classList.add("visible");
+    }
+
+    var buscarInput = document.getElementById("buscarCliente");
+    var btnLimpiar = document.getElementById("btnLimpiarBusqueda");
+    buscarInput.addEventListener("input", function (e) {
+      var v = e.target.value;
+      if (v) btnLimpiar.classList.remove("hidden"); else btnLimpiar.classList.add("hidden");
+      renderClientes(v);
+    });
+    btnLimpiar.addEventListener("click", function () {
+      buscarInput.value = ""; btnLimpiar.classList.add("hidden"); renderClientes(""); buscarInput.focus();
+    });
+
+    // ---------- Ficha cliente ----------
+    function abrirFichaCliente(clienteId) {
+      var cli = clientePorId(clienteId);
+      if (!cli) return;
+      clienteActualId = clienteId;
+
+      var citas = state.citas.filter(function (c) { return c.clienteId === clienteId; });
+      var atendidas = citas.filter(function (c) { return c.estado === "atendida"; });
+      var gastado = atendidas.reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
+      var ultima = citas.slice().sort(function (a, b) {
+        return (b.fecha + b.hora).localeCompare(a.fecha + a.hora);
+      })[0];
+
+      var body = document.getElementById("clientModalBody");
+      body.innerHTML =
+        '<div class="flex items-center gap-4">' +
+          '<div class="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-500 to-brand-400 text-white font-bold text-2xl flex items-center justify-center font-serif shadow-lg shadow-brand-500/25 shrink-0">' + cli.nombre.charAt(0).toUpperCase() + '</div>' +
+          '<div class="min-w-0 flex-1">' +
+            '<h2 class="font-serif font-bold text-lg text-slate-900 dark:text-white truncate">' + cli.nombre + '</h2>' +
+            (cli.tel ? '<a href="' + waLink(cli.tel, "¡Hola " + cli.nombre.split(" ")[0] + "!") + '" target="_blank" rel="noopener" class="text-sm text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1.5 mt-0.5"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>' + cli.tel + '</a>' : '<p class="text-sm text-slate-400">Sin teléfono</p>') +
+          '</div>' +
+        '</div>' +
+
+        '<div class="grid grid-cols-3 gap-2">' +
+          '<div class="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-2.5 text-center border border-slate-100 dark:border-zinc-800">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Citas</p>' +
+            '<p class="text-lg font-extrabold text-slate-900 dark:text-white stat-number">' + citas.length + '</p>' +
+          '</div>' +
+          '<div class="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-2.5 text-center border border-emerald-100 dark:border-emerald-900/40">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Total</p>' +
+            '<p class="text-lg font-extrabold text-emerald-700 dark:text-emerald-300 stat-number">$' + gastado + '</p>' +
+          '</div>' +
+          '<div class="bg-brand-50 dark:bg-brand-950/30 rounded-xl p-2.5 text-center border border-brand-100 dark:border-brand-900/40">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Visitas</p>' +
+            '<p class="text-lg font-extrabold text-brand-700 dark:text-brand-300 stat-number">' + atendidas.length + '</p>' +
+          '</div>' +
+        '</div>' +
+
+        (ultima ? '<p class="text-xs text-slate-500 dark:text-slate-400 text-center">Última visita: <span class="font-semibold capitalize">' + conMayuscula(new Date(ultima.fecha + "T00:00:00").toLocaleDateString("es-MX", FORMATO_LARGO)) + '</span></p>' : '') +
+
+        '<div class="space-y-1.5 pt-3 border-t border-slate-100 dark:border-zinc-800">' +
+          '<label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5"><i data-lucide="notebook-pen" class="w-3.5 h-3.5"></i>Notas del cliente</label>' +
+          '<textarea id="clienteNotas" rows="3" placeholder="Alergias, preferencias, productos favoritos..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none focus:ring-2 focus:ring-brand-500">' + (cli.notas || "") + '</textarea>' +
+          '<p class="text-[10px] text-slate-400 text-right">Se guardan automáticamente</p>' +
+        '</div>' +
+
+        '<div class="flex gap-2 pt-2">' +
+          '<button id="btnFichaNuevaCita" type="button" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">' +
+            '<i data-lucide="plus" class="w-4 h-4"></i> Nueva cita' +
+          '</button>' +
+        '</div>' +
+
+        '<div class="pt-4 border-t border-slate-100 dark:border-zinc-800 space-y-2">' +
+          '<h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2"><i data-lucide="history" class="w-3.5 h-3.5"></i>Historial de citas</h4>' +
+          '<div id="fichaHistorial" class="space-y-2 max-h-64 overflow-y-auto custom-scrollbar pr-1"></div>' +
+        '</div>';
+
+      var hist = document.getElementById("fichaHistorial");
+      var ordenadas = citas.slice().sort(function (a, b) { return (b.fecha + b.hora).localeCompare(a.fecha + a.hora); });
+
+      if (ordenadas.length === 0) {
+        hist.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center">Sin historial aún.</p>';
+      } else {
+        ordenadas.forEach(function (c) {
+          var row = document.createElement("div");
+          row.className = "flex items-center justify-between gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800/60 text-xs";
+          row.innerHTML =
+            '<div class="flex items-center gap-2 min-w-0">' +
+              '<span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:' + statusColor(c) + '"></span>' +
+              '<div class="min-w-0">' +
+                '<p class="font-semibold text-slate-800 dark:text-slate-200 truncate capitalize">' + new Date(c.fecha + "T00:00:00").toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" }) + ' · ' + formatHora12(c.hora) + '</p>' +
+                '<p class="text-slate-500 dark:text-slate-400 truncate">' + c.servicio + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="text-right shrink-0">' +
+              '<p class="font-bold text-slate-900 dark:text-white">$' + c.precio + '</p>' +
+              '<p class="text-[10px] ' + (c.pagado ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400") + '">' + (c.pagado ? "Pagado" : "Pendiente") + '</p>' +
+            '</div>';
+          hist.appendChild(row);
+        });
+      }
+
+      var ta = document.getElementById("clienteNotas");
+      ta.addEventListener("change", function () {
+        cli.notas = ta.value.trim();
+        guardar(state);
+      });
+      ta.addEventListener("blur", function () {
+        cli.notas = ta.value.trim();
+        guardar(state);
+      });
+
+      document.getElementById("btnFichaNuevaCita").addEventListener("click", function () {
+        hideModal(document.getElementById("clientModal"));
+        fechaPendienteNueva = fechaISO(new Date());
+        irAVista("nueva");
+        setTimeout(function () {
+          var sel = document.getElementById("selCliente");
+          if (sel) { sel.value = clienteId; }
+        }, 100);
+      });
+
+      showModal(document.getElementById("clientModal"));
+    }
+
+    document.getElementById("btnCloseClientModal").addEventListener("click", function () {
+      hideModal(document.getElementById("clientModal"));
+      clienteActualId = null;
+    });
+
+    // ---------- Importar contactos ----------
+    var btnImport = document.getElementById("btnImportContacts");
+    btnImport.addEventListener("click", function () {
+      if (!("contacts" in navigator) || !("ContactsManager" in window)) {
+        showToast("Tu navegador no permite importar contactos. Solo Chrome en Android.", "error");
+        return;
+      }
+      var props = ["name", "tel"];
+      var opts = { multiple: true };
+      navigator.contacts.select(props, opts).then(function (contacts) {
+        if (!contacts || contacts.length === 0) return;
+        var added = 0;
+        contacts.forEach(function (c) {
+          var nombre = (c.name && c.name[0]) || "";
+          var tel = (c.tel && c.tel[0]) || "";
+          if (!nombre) return;
+          state.clientes.push({ id: uid(), nombre: nombre, tel: tel.replace(/\D/g, ""), notas: "" });
+          added++;
+        });
+        guardar(state);
+        renderClientes(buscarInput.value);
+        poblarSelectClientes();
+        haptic([10, 40, 10]);
+        showToast(added + " contacto" + (added === 1 ? "" : "s") + " agregado" + (added === 1 ? "" : "s"), "success");
+      }).catch(function (err) {
+        if (err && err.name !== "AbortError") showToast("No se pudieron importar contactos", "error");
+      });
+    });
+
+    document.getElementById("btnAddCliente").addEventListener("click", function () {
+      var nombre = document.getElementById("nuevoClienteNombre").value.trim();
+      var tel = document.getElementById("nuevoClienteTel").value.trim();
+      if (!nombre) { showToast("Escribe el nombre", "error"); return; }
+      state.clientes.push({ id: uid(), nombre: nombre, tel: tel.replace(/\D/g, ""), notas: "" });
+      guardar(state);
+      document.getElementById("nuevoClienteNombre").value = "";
+      document.getElementById("nuevoClienteTel").value = "";
+      renderClientes(buscarInput.value);
+      poblarSelectClientes();
+      haptic([10, 30, 10]);
+      showToast("Cliente agregado ✓", "success");
+      document.getElementById("nuevoClienteNombre").focus();
+    });
+
+    function poblarSelectClientes() {
+      var sel = document.getElementById("selCliente");
+      var actual = sel.value;
+      sel.innerHTML = "";
+      if (state.clientes.length === 0) {
+        var optVacio = document.createElement("option");
+        optVacio.value = "__nuevo__";
+        optVacio.textContent = "+ Agregar Nuevo Cliente";
+        sel.appendChild(optVacio);
+        return;
+      }
+      state.clientes.slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, "es"); }).forEach(function (c) {
+        var opt = document.createElement("option");
+        opt.value = c.id; opt.textContent = c.nombre;
+        sel.appendChild(opt);
+      });
+      var optNuevo = document.createElement("option");
+      optNuevo.value = "__nuevo__";
+      optNuevo.textContent = "+ Agregar Nuevo Cliente";
+      sel.appendChild(optNuevo);
+      if (actual) sel.value = actual;
+    }
+
+    document.getElementById("selCliente").addEventListener("change", function (e) {
+      var inline = document.getElementById("nuevoClienteInline");
+      if (e.target.value === "__nuevo__") inline.classList.remove("hidden");
+      else inline.classList.add("hidden");
+    });
+
+    // ---------- Servicios ----------
+    function renderServiciosChips() {
+      var cont = document.getElementById("serviciosContainer");
+      cont.innerHTML = "";
+      if (state.servicios.length === 0) {
+        cont.innerHTML = '<p class="text-xs text-slate-400 italic py-1">Aún no hay servicios guardados. Agrega uno con el botón "Administrar".</p>';
+        lucide.createIcons();
+        return;
+      }
+      state.servicios.forEach(function (s) {
+        var chip = document.createElement("button");
+        chip.type = "button";
+        var isSel = !!selectedServicesMap[s.id];
+        chip.className = "px-3 py-1.5 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 active:scale-95 " +
+          (isSel ? "bg-brand-600 text-white border-brand-600 shadow-sm shadow-brand-600/25 anim-pop"
+                 : "bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-zinc-700 hover:border-brand-400");
+        chip.innerHTML = (isSel ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : "") + s.nombre + ' <span class="opacity-75">($' + s.precio + ')</span>';
+        chip.addEventListener("click", function () {
+          if (selectedServicesMap[s.id]) delete selectedServicesMap[s.id];
+          else selectedServicesMap[s.id] = s;
+          actualizarCamposServicios();
+          renderServiciosChips();
+        });
+        cont.appendChild(chip);
+      });
+      lucide.createIcons();
+    }
+    function actualizarCamposServicios() {
+      var keys = Object.keys(selectedServicesMap);
+      if (keys.length === 0) return;
+      var nombres = [], total = 0;
+      keys.forEach(function (k) { nombres.push(selectedServicesMap[k].nombre); total += Number(selectedServicesMap[k].precio); });
+      document.getElementById("inpServicio").value = nombres.join(" y ");
+      document.getElementById("inpPrecio").value = total;
+    }
+
+    var serviceModal = document.getElementById("serviceModal");
+    document.getElementById("btnOpenAddServiceModal").addEventListener("click", function () { renderModalServicesList(); showModal(serviceModal); });
+    document.getElementById("btnCloseServiceModal").addEventListener("click", function () { hideModal(serviceModal); });
+
+    function renderModalServicesList() {
+      var list = document.getElementById("modalServicesList");
+      list.innerHTML = "";
+      if (state.servicios.length === 0) { list.innerHTML = '<p class="text-xs text-slate-400">Sin servicios.</p>'; return; }
+      state.servicios.forEach(function (s) {
+        var row = document.createElement("div");
+        row.className = "flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-zinc-800/50 border border-slate-100 dark:border-zinc-800 text-xs";
+        row.innerHTML = '<span class="font-medium text-slate-800 dark:text-slate-200">' + s.nombre + ' ($' + s.precio + ')</span>' +
+          '<button type="button" class="text-red-500 hover:text-red-700 p-1 rounded-lg"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>';
+        row.querySelector("button").addEventListener("click", function () { eliminarServicio(s.id); });
+        list.appendChild(row);
+      });
+      lucide.createIcons();
+    }
+    function eliminarServicio(id) {
+      state.servicios = state.servicios.filter(function (s) { return s.id !== id; });
+      delete selectedServicesMap[id];
+      guardar(state);
+      renderModalServicesList(); renderServiciosChips(); actualizarCamposServicios();
+      showToast("Servicio eliminado", "info");
+    }
+    document.getElementById("btnSaveNewService").addEventListener("click", function () {
+      var name = document.getElementById("newServiceName").value.trim();
+      var price = Number(document.getElementById("newServicePrice").value) || 0;
+      if (!name) { showToast("Escribe el nombre", "error"); return; }
+      state.servicios.push({ id: uid(), nombre: name, precio: price });
+      guardar(state);
+      document.getElementById("newServiceName").value = "";
+      document.getElementById("newServicePrice").value = "";
+      renderModalServicesList(); renderServiciosChips();
+      showToast("Servicio agregado", "success");
+    });
+
+    // ---------- Nueva cita ----------
+    function prepararFormulario() {
+      poblarSelectClientes();
+      renderServiciosChips();
+      document.getElementById("inpFecha").value = fechaPendienteNueva || fechaISO(diaActual);
+      fechaPendienteNueva = null;
+      document.getElementById("avisoError").classList.add("hidden");
+      document.getElementById("avisoOk").classList.add("hidden");
+    }
+
+    document.getElementById("formCita").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var errorBox = document.getElementById("avisoError");
+      var okBox = document.getElementById("avisoOk");
+      errorBox.classList.add("hidden"); okBox.classList.add("hidden");
+
+      var selVal = document.getElementById("selCliente").value;
+      var clienteId = selVal;
+
+      if (selVal === "__nuevo__") {
+        var nn = document.getElementById("inlineNombre").value.trim();
+        if (!nn) {
+          document.getElementById("avisoErrorTxt").textContent = "Escribe el nombre del nuevo cliente.";
+          errorBox.classList.remove("hidden"); lucide.createIcons(); return;
+        }
+        var nid = uid();
+        state.clientes.push({ id: nid, nombre: nn, tel: (document.getElementById("inlineTel").value || "").replace(/\D/g, ""), notas: "" });
+        clienteId = nid;
+      }
+
+      var fecha = document.getElementById("inpFecha").value;
+      var hora = document.getElementById("inpHora").value;
+      var duracion = Number(document.getElementById("inpDuracion").value) || 60;
+      var servicio = document.getElementById("inpServicio").value.trim();
+      var precio = Number(document.getElementById("inpPrecio").value) || 0;
+      var notas = document.getElementById("inpNotas").value.trim();
+
+      if (!fecha || !hora || !servicio) {
+        document.getElementById("avisoErrorTxt").textContent = "Completa fecha, hora y servicio.";
+        errorBox.classList.remove("hidden"); lucide.createIcons(); return;
+      }
+
+      var choque = state.citas.some(function (c) {
+        return c.fecha === fecha && c.hora === hora && c.estado !== "cancelada";
+      });
+      if (choque) {
+        document.getElementById("avisoErrorTxt").textContent = "Ya existe una cita a esa hora.";
+        errorBox.classList.remove("hidden"); lucide.createIcons(); return;
+      }
+
+      state.citas.push({
+        id: uid(), clienteId: clienteId, fecha: fecha, hora: hora, duracion: duracion,
+        servicio: servicio, precio: precio, estado: "pendiente", pagado: false, notas: notas
+      });
+      guardar(state);
+      haptic([15, 30, 15]);
+
+      document.getElementById("avisoOkTxt").textContent = "¡Cita agendada!";
+      okBox.classList.remove("hidden"); lucide.createIcons();
+
+      document.getElementById("formCita").reset();
+      document.getElementById("nuevoClienteInline").classList.add("hidden");
+      selectedServicesMap = {};
+      poblarSelectClientes();
+      renderServiciosChips();
+      showToast("Cita agendada ✓", "success");
+      diaActual = new Date(fecha + "T00:00:00");
+      setTimeout(function () { irAVista("agenda"); }, 900);
+    });
+
+    // ---------- Edit modal ----------
+    var editModal = document.getElementById("editModal");
+    function setEditEstado(estado) {
+      editEstadoActual = estado;
+      document.querySelectorAll("#editEstadoGroup .estado-btn").forEach(function (b) {
+        var e = b.getAttribute("data-estado");
+        if (e === estado) {
+          if (e === "pendiente") b.className = "estado-btn py-2 rounded-xl text-xs font-semibold border transition bg-amber-500 text-white border-amber-500 shadow-md shadow-amber-500/25";
+          else if (e === "atendida") b.className = "estado-btn py-2 rounded-xl text-xs font-semibold border transition bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/25";
+          else b.className = "estado-btn py-2 rounded-xl text-xs font-semibold border transition bg-slate-500 text-white border-slate-500 shadow-md shadow-slate-500/25";
+        } else {
+          b.className = "estado-btn py-2 rounded-xl text-xs font-semibold border transition bg-white dark:bg-zinc-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-zinc-700 hover:border-brand-400";
+        }
+      });
+    }
+    document.querySelectorAll("#editEstadoGroup .estado-btn").forEach(function (b) {
+      b.addEventListener("click", function () { setEditEstado(b.getAttribute("data-estado")); haptic(8); });
+    });
+
+    function abrirEditarCita(id) {
+      var cita = state.citas.filter(function (c) { return c.id === id; })[0];
+      if (!cita) return;
+      editandoId = id;
+      var sel = document.getElementById("editCliente");
+      sel.innerHTML = "";
+      state.clientes.slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, "es"); }).forEach(function (c) {
+        var opt = document.createElement("option");
+        opt.value = c.id; opt.textContent = c.nombre;
+        sel.appendChild(opt);
+      });
+      sel.value = cita.clienteId;
+      document.getElementById("editFecha").value = cita.fecha;
+      document.getElementById("editHora").value = cita.hora;
+      document.getElementById("editDuracion").value = String(cita.duracion || 60);
+      document.getElementById("editServicio").value = cita.servicio;
+      document.getElementById("editPrecio").value = cita.precio;
+      document.getElementById("editNotas").value = cita.notas || "";
+      setEditEstado(cita.estado);
+      showModal(editModal);
+    }
+    function cerrarEditModal() { hideModal(editModal); editandoId = null; }
+    document.getElementById("btnCloseEditModal").addEventListener("click", cerrarEditModal);
+    document.getElementById("btnCloseEditModal2").addEventListener("click", cerrarEditModal);
+
+    document.getElementById("btnGuardarEdicion").addEventListener("click", function () {
+      if (!editandoId) return;
+      var cita = state.citas.filter(function (c) { return c.id === editandoId; })[0];
+      if (!cita) return;
+      var fecha = document.getElementById("editFecha").value;
+      var hora = document.getElementById("editHora").value;
+      var servicio = document.getElementById("editServicio").value.trim();
+      if (!fecha || !hora || !servicio) { showToast("Completa fecha, hora y servicio", "error"); return; }
+      var choque = state.citas.some(function (c) {
+        return c.id !== editandoId && c.fecha === fecha && c.hora === hora && c.estado !== "cancelada";
+      });
+      if (choque) { showToast("Ya existe otra cita en ese horario", "error"); return; }
+      cita.clienteId = document.getElementById("editCliente").value;
+      cita.fecha = fecha;
+      cita.hora = hora;
+      cita.duracion = Number(document.getElementById("editDuracion").value) || 60;
+      cita.servicio = servicio;
+      cita.precio = Number(document.getElementById("editPrecio").value) || 0;
+      cita.estado = editEstadoActual;
+      cita.notas = document.getElementById("editNotas").value.trim();
+      guardar(state);
+      haptic([10, 30, 10]);
+      cerrarEditModal();
+      showToast("Cita actualizada ✓", "success");
+      refrescarVistaActiva();
+    });
+
+    // ---------- Estadísticas ----------
+    function renderEstadisticas() {
+      var periodos = [
+        { id: "semana", label: "Esta semana" },
+        { id: "mes",    label: "Este mes" },
+        { id: "anio",   label: "Este año" },
+        { id: "todo",   label: "Todo" }
+      ];
+      var contP = document.getElementById("statsPeriodo");
+      contP.innerHTML = "";
+      periodos.forEach(function (p) {
+        var active = statsPeriodo === p.id;
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "filter-chip px-3.5 py-2 rounded-xl text-xs font-semibold border " +
+          (active ? "bg-brand-600 text-white border-brand-600 shadow-md shadow-brand-600/25"
+                  : "bg-white dark:bg-zinc-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-zinc-800 hover:border-brand-400");
+        b.textContent = p.label;
+        b.addEventListener("click", function () { statsPeriodo = p.id; haptic(8); renderEstadisticas(); });
+        contP.appendChild(b);
+      });
+
+      var hoy = new Date();
+      var inicio;
+      if (statsPeriodo === "semana") {
+        var dow = (hoy.getDay() + 6) % 7;
+        inicio = new Date(hoy); inicio.setDate(hoy.getDate() - dow); inicio.setHours(0,0,0,0);
+      } else if (statsPeriodo === "mes") {
+        inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+      } else if (statsPeriodo === "anio") {
+        inicio = new Date(hoy.getFullYear(), 0, 1);
+      } else {
+        inicio = new Date(1970, 0, 1);
+      }
+      var inicioIso = fechaISO(inicio);
+
+      var citasPer = state.citas.filter(function (c) { return c.fecha >= inicioIso; });
+      var atendidas = citasPer.filter(function (c) { return c.estado === "atendida"; });
+      var pendientes = citasPer.filter(function (c) { return getEstadoVisual(c) === "pendiente"; });
+      var canceladas = citasPer.filter(function (c) { return c.estado === "cancelada"; });
+      var ingresoTotal = atendidas.reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
+      var cobrado = atendidas.filter(function (c) { return c.pagado; }).reduce(function (a, c) { return a + Number(c.precio || 0); }, 0);
+      var porCobrar = ingresoTotal - cobrado;
+
+      var servCount = {};
+      atendidas.forEach(function (c) {
+        var key = c.servicio || "Otro";
+        servCount[key] = (servCount[key] || 0) + 1;
+      });
+      var topServs = Object.keys(servCount).map(function (k) { return { nombre: k, n: servCount[k] }; })
+        .sort(function (a, b) { return b.n - a.n; }).slice(0, 5);
+      var maxServ = topServs.length ? topServs[0].n : 1;
+
+      var cliCount = {};
+      atendidas.forEach(function (c) {
+        var cli = clientePorId(c.clienteId);
+        var key = cli ? cli.nombre : "Desconocido";
+        cliCount[key] = (cliCount[key] || 0) + Number(c.precio || 0);
+      });
+      var topCli = Object.keys(cliCount).map(function (k) { return { nombre: k, total: cliCount[k] }; })
+        .sort(function (a, b) { return b.total - a.total; }).slice(0, 5);
+      var maxCli = topCli.length ? topCli[0].total : 1;
+
+      var dias = [];
+      for (var i = 6; i >= 0; i--) {
+        var d = new Date(hoy); d.setDate(hoy.getDate() - i);
+        var iso = fechaISO(d);
+        var n = state.citas.filter(function (c) { return c.fecha === iso && c.estado !== "cancelada"; }).length;
+        dias.push({ iso: iso, label: d.toLocaleDateString("es-MX", { weekday: "short" }).replace(".", "").slice(0, 3), n: n });
+      }
+      var maxDia = Math.max.apply(null, dias.map(function (d) { return d.n; }).concat([1]));
+
+      var cont = document.getElementById("statsContenido");
+
+      if (state.citas.length === 0) {
+        cont.innerHTML = '<div class="anim-fade-up bg-white dark:bg-zinc-900 rounded-2xl p-10 text-center border border-slate-200/80 dark:border-zinc-800 space-y-3">' +
+          '<div class="floaty w-14 h-14 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-400 flex items-center justify-center mx-auto"><i data-lucide="bar-chart-3" class="w-6 h-6"></i></div>' +
+          '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base">Sin datos todavía</h3>' +
+          '<p class="text-xs text-slate-500 max-w-xs mx-auto">Cuando agendes y atiendas citas, aquí verás tus estadísticas, ingresos y mejores clientes.</p></div>';
+        lucide.createIcons();
+        return;
+      }
+
+      cont.innerHTML =
+        '<div class="grid grid-cols-2 gap-3">' +
+          '<div class="bg-gradient-to-tr from-brand-500 to-brand-400 text-white rounded-2xl p-4 shadow-lg shadow-brand-500/20">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1">Atendidas</p>' +
+            '<p class="text-3xl font-extrabold stat-number">' + atendidas.length + '</p>' +
+            '<p class="text-[11px] opacity-80 mt-1">de ' + citasPer.length + ' totales</p>' +
+          '</div>' +
+          '<div class="bg-gradient-to-tr from-emerald-600 to-emerald-500 text-white rounded-2xl p-4 shadow-lg shadow-emerald-500/20">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1">Ingreso</p>' +
+            '<p class="text-3xl font-extrabold stat-number">$' + ingresoTotal + '</p>' +
+            '<p class="text-[11px] opacity-80 mt-1">$' + porCobrar + ' por cobrar</p>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="grid grid-cols-3 gap-2">' +
+          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 text-center">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Cobrado</p>' +
+            '<p class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 stat-number">$' + cobrado + '</p>' +
+          '</div>' +
+          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 text-center">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pendientes</p>' +
+            '<p class="text-lg font-extrabold text-amber-600 dark:text-amber-400 stat-number">' + pendientes.length + '</p>' +
+          '</div>' +
+          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-3 border border-slate-200/80 dark:border-zinc-800 text-center">' +
+            '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Canceladas</p>' +
+            '<p class="text-lg font-extrabold text-slate-500 stat-number">' + canceladas.length + '</p>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm">' +
+          '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">' +
+            '<i data-lucide="trending-up" class="w-4 h-4 text-brand-500"></i>Últimos 7 días</h3>' +
+          '<div class="flex items-end justify-between gap-1 h-28">' +
+            dias.map(function (d) {
+              var h = Math.max(6, Math.round((d.n / maxDia) * 100));
+              return '<div class="flex-1 flex flex-col items-center gap-1.5">' +
+                '<div class="w-full flex-1 flex items-end">' +
+                  '<div class="w-full rounded-t-lg stat-bar-fill" style="height:' + h + '%"></div>' +
+                '</div>' +
+                '<p class="text-[9px] font-bold text-slate-500 uppercase">' + d.label + '</p>' +
+                '<p class="text-[10px] font-bold text-slate-700 dark:text-slate-300 stat-number">' + d.n + '</p>' +
+              '</div>';
+            }).join("") +
+          '</div>' +
+        '</div>' +
+
+        (topServs.length ? (
+          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm">' +
+            '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">' +
+              '<i data-lucide="scissors" class="w-4 h-4 text-brand-500"></i>Servicios top</h3>' +
+            '<div class="space-y-2.5">' +
+              topServs.map(function (s) {
+                var pct = Math.round((s.n / maxServ) * 100);
+                return '<div>' +
+                  '<div class="flex items-center justify-between text-xs mb-1">' +
+                    '<span class="font-semibold text-slate-700 dark:text-slate-300 truncate">' + s.nombre + '</span>' +
+                    '<span class="font-bold text-slate-900 dark:text-white stat-number">' + s.n + '</span>' +
+                  '</div>' +
+                  '<div class="stat-bar-track"><div class="stat-bar-fill" style="width:' + pct + '%"></div></div>' +
+                '</div>';
+              }).join("") +
+            '</div>' +
+          '</div>'
+        ) : "") +
+
+        (topCli.length ? (
+          '<div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm">' +
+            '<h3 class="font-serif font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">' +
+              '<i data-lucide="crown" class="w-4 h-4 text-amber-500"></i>Mejores clientes</h3>' +
+            '<div class="space-y-2.5">' +
+              topCli.map(function (c, i) {
+                var pct = Math.round((c.total / maxCli) * 100);
+                var medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "·";
+                return '<div>' +
+                  '<div class="flex items-center justify-between text-xs mb-1">' +
+                    '<span class="font-semibold text-slate-700 dark:text-slate-300 truncate">' + medal + ' ' + c.nombre + '</span>' +
+                    '<span class="font-bold text-slate-900 dark:text-white stat-number">$' + c.total + '</span>' +
+                  '</div>' +
+                  '<div class="stat-bar-track"><div class="stat-bar-fill" style="width:' + pct + '%"></div></div>' +
+                '</div>';
+              }).join("") +
+            '</div>' +
+          '</div>'
+        ) : "");
+      lucide.createIcons();
+    }
+
+    // ---------- Modo día ----------
+    function renderModoDia() {
+      document.getElementById("modoDiaFecha").textContent = conMayuscula(modoDiaFecha.toLocaleDateString("es-MX", FORMATO_LARGO));
+      var iso = fechaISO(modoDiaFecha);
+      var citas = state.citas.filter(function (c) { return c.fecha === iso; })
+        .sort(function (a, b) { return a.hora.localeCompare(b.hora); });
+      var cont = document.getElementById("modoDiaList");
+      cont.innerHTML = "";
+
+      if (citas.length === 0) {
+        cont.innerHTML = '<div class="bg-white dark:bg-zinc-900 rounded-3xl p-10 text-center border border-slate-200/80 dark:border-zinc-800">' +
+          '<p class="text-4xl mb-3">🎉</p><h3 class="font-serif font-bold text-xl text-slate-900 dark:text-white">Día libre</h3>' +
+          '<p class="text-sm text-slate-500 mt-2">No hay citas para este día.</p></div>';
+        return;
+      }
+
+      citas.forEach(function (c) {
+        var cli = clientePorId(c.clienteId);
+        var card = document.createElement("div");
+        card.className = "cita-card bg-white dark:bg-zinc-900 rounded-3xl p-5 border-2 border-slate-200 dark:border-zinc-800 shadow-sm";
+        card.style.setProperty("--status-color", statusColor(c));
+        card.innerHTML =
+          '<div class="flex items-center justify-between gap-3 mb-3">' +
+            '<div class="text-3xl font-extrabold font-serif stat-number text-slate-900 dark:text-white">' + formatHora12(c.hora) + '</div>' +
+            '<div class="text-right">' + getStatusBadgeHtml(c) +
+              (c.pagado ? '<div class="mt-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">✓ PAGADO</div>' : "") +
+            '</div>' +
+          '</div>' +
+          '<h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1 truncate">' + (cli ? cli.nombre : "Cliente") + '</h3>' +
+          '<p class="text-base text-slate-600 dark:text-slate-300 mb-4">' + c.servicio + ' · $' + c.precio + '</p>' +
+          (c.notas ? '<p class="text-sm italic bg-slate-50 dark:bg-zinc-800/40 p-3 rounded-xl text-slate-600 dark:text-slate-400 mb-4">"' + c.notas + '"</p>' : "") +
+          '<div class="grid grid-cols-2 gap-2">' +
+            (c.estado === "pendiente" ? '<button data-action="atender" class="py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base flex items-center justify-center gap-2"><i data-lucide="check" class="w-5 h-5"></i>Atender</button>' : '') +
+            (cli && cli.tel ? '<a href="' + waLink(cli.tel, recordatorioTexto(c)) + '" target="_blank" rel="noopener" class="py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-base flex items-center justify-center gap-2 col-span-' + (c.estado === "pendiente" ? "1" : "2") + '"><i data-lucide="message-circle" class="w-5 h-5"></i>WhatsApp</a>' : "") +
+          '</div>';
+
+        if (c.estado === "pendiente") {
+          card.querySelector('[data-action="atender"]').addEventListener("click", function () {
+            cambiarEstado(c.id, "atendida"); renderModoDia();
+          });
+        }
+        cont.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    document.getElementById("btnModoDia").addEventListener("click", function () {
+      modoDiaFecha = new Date(diaActual);
+      document.getElementById("modoDia").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      renderModoDia();
+    });
+    document.getElementById("btnCerrarModoDia").addEventListener("click", function () {
+      document.getElementById("modoDia").classList.add("hidden");
+      document.body.style.overflow = "";
+    });
+    document.getElementById("modoPrevDay").addEventListener("click", function () { modoDiaFecha.setDate(modoDiaFecha.getDate() - 1); renderModoDia(); });
+    document.getElementById("modoNextDay").addEventListener("click", function () { modoDiaFecha.setDate(modoDiaFecha.getDate() + 1); renderModoDia(); });
+    document.getElementById("modoToday").addEventListener("click", function () { modoDiaFecha = new Date(); renderModoDia(); });
+
+    // ---------- Swipe ----------
+    var touchActive = false, touchDecided = false, touchDir = null;
+    var startX = 0, startY = 0, startTranslate = 0, trackWidth = 0;
+
+    function isInteractiveTarget(el) {
+      if (!el || !el.closest) return false;
+      var tag = el.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+      if (el.closest(".modal-backdrop")) return true;
+      if (el.closest("#mobileNav") || el.closest("#fabNueva")) return true;
+      if (el.closest("#alphaIndex")) return true;
+      if (el.closest("#themePanel")) return true;
+      if (el.closest("#modoDia")) return true;
+      if (el.closest("[data-no-swipe]")) return true;
+      return false;
+    }
+
+    document.addEventListener("touchstart", function (e) {
+      if (e.touches.length !== 1) return;
+      if (vistaActual === "nueva") return;
+      if (isInteractiveTarget(e.target)) return;
+      var t = e.touches[0];
+      startX = t.clientX; startY = t.clientY;
+      trackWidth = viewsTrack.offsetWidth || 1;
+      startTranslate = -currentIndex * trackWidth;
+      touchActive = true; touchDecided = false; touchDir = null;
+    }, { passive: true });
+
+    document.addEventListener("touchmove", function (e) {
+      if (!touchActive) return;
+      if (e.touches.length !== 1) return;
+      var t = e.touches[0];
+      var dx = t.clientX - startX, dy = t.clientY - startY;
+      if (!touchDecided) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        touchDecided = true;
+        if (Math.abs(dy) > Math.abs(dx)) { touchActive = false; return; }
+        else { touchDir = "h"; viewsTrack.style.transition = "none"; }
+      }
+      if (touchDir !== "h") return;
+      if (e.cancelable) e.preventDefault();
+      var tr = startTranslate + dx;
+      var minTr = -(SWIPE_ORDER.length - 1) * trackWidth, maxTr = 0;
+      if (tr > maxTr) tr = maxTr + (tr - maxTr) * 0.3;
+      else if (tr < minTr) tr = minTr + (tr - minTr) * 0.3;
+      viewsTrack.style.transform = "translateX(" + tr + "px)";
+    }, { passive: false });
+
+    document.addEventListener("touchend", function (e) {
+      if (!touchActive) { touchDecided = false; touchDir = null; return; }
+      if (touchDir !== "h") { touchActive = false; touchDecided = false; touchDir = null; return; }
+      var t = e.changedTouches[0];
+      var dx = t.clientX - startX;
+      var threshold = trackWidth * 0.22;
+      if (dx < -threshold && currentIndex < SWIPE_ORDER.length - 1) irAVista(SWIPE_ORDER[currentIndex + 1]);
+      else if (dx > threshold && currentIndex > 0) irAVista(SWIPE_ORDER[currentIndex - 1]);
+      else {
+        viewsTrack.style.transition = "transform .35s cubic-bezier(.16, 1, .3, 1)";
+        viewsTrack.style.transform = "translateX(" + (-currentIndex * 100) + "%)";
+      }
+      touchActive = false; touchDecided = false; touchDir = null;
+    }, { passive: true });
+
+    document.addEventListener("touchcancel", function () {
+      if (touchDir === "h") {
+        viewsTrack.style.transition = "transform .3s ease";
+        viewsTrack.style.transform = "translateX(" + (-currentIndex * 100) + "%)";
+      }
+      touchActive = false; touchDecided = false; touchDir = null;
+    }, { passive: true });
+
+    // ---------- Auto-refresh + notificaciones ----------
+    setInterval(function () {
+      if (vistaActual === "agenda" || vistaActual === "todas" || vistaActual === "calendario" || vistaActual === "estadisticas") {
+        refrescarVistaActiva();
+      }
+      revisarNotificaciones();
+    }, 30000);
+
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        setTrackIndex(currentIndex, false);
+        if (vistaActual === "clientes") renderClientes(buscarInput.value);
+      }, 200);
+    });
+
+    // ---------- INIT: manifest dinámico + install prompt ----------
+    (function initPWA() {
+      var svgIcon = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c8384f'/><stop offset='100%25' stop-color='%23ea8390'/></linearGradient></defs><rect width='512' height='512' rx='120' fill='url(%23g)'/><text x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='300' font-family='Georgia,serif' font-weight='700' fill='white'>A</text></svg>";
+      var manifest = {
+        name: "Agenda Fácil",
+        short_name: "Agenda Fácil",
+        description: "Gestión elegante de citas y clientes",
+        start_url: "./index.html",
+        scope: "./",
+        display: "standalone",
+        orientation: "portrait",
+        background_color: "#f2efe9",
+        theme_color: "#c8384f",
+        lang: "es",
+        icons: [
+          { src: svgIcon, sizes: "192x192", type: "image/svg+xml", purpose: "any" },
+          { src: svgIcon, sizes: "512x512", type: "image/svg+xml", purpose: "any" },
+          { src: svgIcon, sizes: "512x512", type: "image/svg+xml", purpose: "maskable" }
+        ]
+      };
+      var blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });
+      var manifestUrl = URL.createObjectURL(blob);
+      var link = document.createElement("link");
+      link.rel = "manifest";
+      link.href = manifestUrl;
+      document.head.appendChild(link);
+
+      var deferredPrompt = null;
+      var installBtn = document.getElementById("installBtn");
+
+      window.addEventListener("beforeinstallprompt", function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (window.matchMedia("(display-mode: standalone)").matches) return;
+        if (localStorage.getItem("installDismissed") === "1") return;
+        installBtn.classList.add("show");
+      });
+
+      installBtn.addEventListener("click", function () {
+        if (!deferredPrompt) return;
+        installBtn.classList.remove("show");
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (choice) {
+          if (choice.outcome === "dismissed") localStorage.setItem("installDismissed", "1");
+          deferredPrompt = null;
+        });
+      });
+
+      window.addEventListener("appinstalled", function () {
+        installBtn.classList.remove("show");
+        localStorage.removeItem("installDismissed");
+        haptic([15, 40, 15]);
+        showToast("¡App instalada! Búscala en tu pantalla de inicio 🎉", "success");
+      });
+
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      var isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+      if (isIOS && !isStandalone && localStorage.getItem("installDismissed") !== "1") {
+        var iosBtn = document.createElement("button");
+        iosBtn.id = "installBtnIOS";
+        iosBtn.type = "button";
+        iosBtn.style.cssText = "position:fixed; bottom:calc(96px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%); z-index:45; padding:12px 20px; border-radius:9999px; background:linear-gradient(135deg,#c8384f,#dd576a); color:white; font-weight:700; font-size:14px; box-shadow:0 12px 30px -8px rgba(200,56,79,.5); display:flex; align-items:center; gap:8px;";
+        iosBtn.innerHTML = '<span>📲 Instalar en iPhone</span>';
+        document.body.appendChild(iosBtn);
+        iosBtn.addEventListener("click", function () {
+          showToast("Toca Compartir ⎋ y luego 'Añadir a pantalla de inicio'", "info");
+          setTimeout(function () { iosBtn.remove(); localStorage.setItem("installDismissed", "1"); }, 6000);
+        });
+      }
+
+      if ("serviceWorker" in navigator) {
+        var swCode = "self.addEventListener('install', function(e){self.skipWaiting();});" +
+                     "self.addEventListener('activate', function(e){e.waitUntil(self.clients.claim());});" +
+                     "self.addEventListener('fetch', function(e){e.respondWith(caches.open('af-v1').then(function(c){return c.match(e.request).then(function(r){return r || fetch(e.request).then(function(res){if(res && res.status === 200 && e.request.method === 'GET'){c.put(e.request, res.clone());} return res;});});}));});";
+        var swBlob = new Blob([swCode], { type: "application/javascript" });
+        var swUrl = URL.createObjectURL(swBlob);
+        navigator.serviceWorker.register(swUrl).catch(function () {});
+      }
+    })();
+
+    // ---------- Init ----------
+    setActiveTab("agenda");
+    updateHeaderTitle("agenda");
+    setTrackIndex(0, false);
+    actualizarBotonInvertirAgenda();
+    actualizarBotonInvertirTodas();
+    renderAgenda();
+    poblarSelectClientes();
+    lucide.createIcons();
+  })();
+  </script>
+</body>
+</html>
