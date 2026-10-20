@@ -132,19 +132,6 @@ La información se almacena exclusivamente en el navegador del usuario, bajo las
 - Estadísticas semanales y mensuales.
 - Modo oscuro automático según la hora del día.
 
-## Contribuciones
-
-Las contribuciones son bienvenidas. Para proponer cambios o reportar problemas:
-
-1. Abrir un issue describiendo el problema o la mejora propuesta.
-2. Realizar un fork del repositorio.
-3. Crear una rama descriptiva: `git checkout -b feature/nueva-funcionalidad`.
-4. Registrar los cambios con un mensaje claro: `git commit -m "Añade nueva funcionalidad"`.
-5. Publicar la rama: `git push origin feature/nueva-funcionalidad`.
-6. Abrir un pull request detallando los cambios realizados.
-
-Se recomienda mantener el estilo de código existente y verificar el funcionamiento en navegadores de escritorio y móviles antes de enviar una contribución.
-
 ## Licencia
 
 Este proyecto se distribuye bajo la licencia MIT. Se permite su uso, modificación y distribución, incluso con fines comerciales, siempre que se conserve el aviso de copyright original.
