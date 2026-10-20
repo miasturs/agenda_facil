@@ -1,1 +1,492 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full" data-theme="soft">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Agenda Fácil — Gestión de Citas Premium</title>
 
+  <meta name="theme-color" content="#c8384f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Agenda Fácil">
+  <meta name="description" content="Gestión elegante de citas y clientes para profesionales.">
+
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c8384f'/><stop offset='100%25' stop-color='%23ea8390'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23g)'/><text x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='110' font-family='Georgia,serif' font-weight='700' fill='white'>A</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c8384f'/><stop offset='100%25' stop-color='%23ea8390'/></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23g)'/><text x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='110' font-family='Georgia,serif' font-weight='700' fill='white'>A</text></svg>">
+
+  <link rel="manifest" href="./manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fdf3f4', 100: '#fbe6e8', 200: '#f8d1d5', 300: '#f3b0b7',
+              400: '#ea8390', 500: '#dd576a', 600: '#c8384f', 700: '#a8293e',
+              800: '#8c2537', 900: '#772433', 950: '#420f18',
+            },
+            accent: { gold: '#D4AF37', emerald: '#10B981' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <script src="https://unpkg.com/lucide@0.451.0"></script>
+
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body class="h-full bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+  <div id="app" class="min-h-full flex flex-col max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-28 sm:pb-0">
+
+    <header class="sticky top-0 z-30 safe-header-top pb-3 backdrop-blur-md border-b border-slate-200/70 dark:border-zinc-800/70 transition-colors">
+      <div class="flex items-center justify-between gap-2 mb-2 sm:mb-3">
+        <h1 id="headerTitle" class="text-xl sm:text-2xl font-extrabold tracking-tight font-serif gradient-title truncate anim-title">Agenda Fácil</h1>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btnSettings" aria-label="Ajustes" class="p-2 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+          <button id="btnNotif" aria-label="Recordatorios" class="p-2 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm">
+            <i data-lucide="bell" class="w-4 h-4"></i>
+          </button>
+          <div class="relative">
+            <button id="themeToggle" aria-label="Elegir tema" class="p-2 rounded-xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700/70 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm">
+              <i data-lucide="palette" class="w-4 h-4"></i>
+            </button>
+            <div id="themePanel" class="hidden absolute right-0 mt-2 p-3 rounded-2xl shadow-2xl border z-50 w-60">
+              <p class="text-[10px] font-bold uppercase tracking-wider mb-2">Elige un tema</p>
+              <div class="space-y-1">
+                <button type="button" data-theme-set="soft" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #f2efe9 0%, #fbf9f5 55%, #dd576a 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Suave</span>
+                </button>
+                <button type="button" data-theme-set="gray" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #e6e6e6 0%, #a3a3a3 55%, #171717 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Gris</span>
+                </button>
+                <button type="button" data-theme-set="ios" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #f2f2f7 0%, #007aff 55%, #af52de 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">iOS</span>
+                </button>
+                <button type="button" data-theme-set="purple" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #0c0916 0%, #8b5cf6 55%, #e9d5ff 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Morado</span>
+                </button>
+                <button type="button" data-theme-set="red" class="theme-option w-full flex items-center gap-3 p-2 rounded-xl text-left">
+                  <span class="theme-swatch" style="background: linear-gradient(135deg, #0a0606 0%, #dc2626 55%, #fecaca 100%);"></span>
+                  <span class="text-sm font-semibold theme-label">Rojo</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="hidden sm:flex space-x-1 overflow-x-auto custom-scrollbar pb-1 text-sm font-medium">
+        <button data-tab="agenda" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap"><i data-lucide="calendar" class="w-4 h-4"></i><span>Agenda</span></button>
+        <button data-tab="todas" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60"><i data-lucide="list-todo" class="w-4 h-4"></i><span>Citas</span></button>
+        <button data-tab="calendario" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60"><i data-lucide="calendar-days" class="w-4 h-4"></i><span>Calendario</span></button>
+        <button data-tab="clientes" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-zinc-800/60"><i data-lucide="users" class="w-4 h-4"></i><span>Clientes</span></button>
+        <button data-tab="nueva" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all whitespace-nowrap bg-gradient-to-r from-brand-600 to-brand-500 text-white hover:from-brand-700 hover:to-brand-600 shadow-lg shadow-brand-600/25 ml-auto"><i data-lucide="plus-circle" class="w-4 h-4"></i><span>Nueva cita</span></button>
+      </nav>
+    </header>
+
+    <main class="flex-1 py-6">
+      <div id="viewsTrackWrap">
+        <div id="viewsTrack">
+          <div class="view-slide" data-view="agenda">
+            <section id="view-agenda" class="space-y-4">
+              <div id="resumenDia" class="grid grid-cols-3 gap-2"></div>
+              <div class="flex items-center justify-between bg-white dark:bg-zinc-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm card-hover">
+                <button id="prevDay" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300 hover:scale-105"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                <div class="text-center flex-1 min-w-0">
+                  <h2 id="dayLabel" class="text-base sm:text-lg font-bold font-serif text-slate-900 dark:text-white capitalize truncate"></h2>
+                  <p id="dayCount" class="text-[11px] text-slate-400 dark:text-slate-500 font-medium"></p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button id="btnModoDia" title="Modo día ocupado" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400"><i data-lucide="maximize-2" class="w-4 h-4"></i></button>
+                  <button id="btnInvertirAgenda" title="Invertir orden" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400"><i data-lucide="arrow-up-down" class="w-4 h-4 invert-icon" id="iconInvertirAgenda"></i></button>
+                  <button id="goToday" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-300 hover:bg-brand-100">Hoy</button>
+                  <button id="nextDay" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300 hover:scale-105"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                </div>
+              </div>
+              <div id="citasList" class="space-y-3"></div>
+            </section>
+          </div>
+
+          <div class="view-slide" data-view="todas">
+            <section id="view-todas" class="space-y-5">
+              <div id="filtrosTodas" class="flex flex-wrap gap-2"></div>
+              <div class="flex items-center justify-between gap-3 px-1">
+                <p id="todasResumen" class="text-xs text-slate-500 dark:text-slate-400 font-medium"></p>
+                <button id="btnInvertirTodas" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-slate-300 hover:border-brand-400 hover:text-brand-600 shadow-sm">
+                  <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 invert-icon" id="iconInvertirTodas"></i>
+                  <span id="btnInvertirTodasTxt">Más recientes primero</span>
+                </button>
+              </div>
+              <div id="todasList" class="space-y-6"></div>
+            </section>
+          </div>
+
+          <div class="view-slide" data-view="calendario">
+            <section id="view-calendario" class="space-y-5">
+              <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-6 border border-slate-200/80 dark:border-zinc-800 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 id="mesLabel" class="text-lg font-bold font-serif text-slate-900 dark:text-white capitalize"></h2>
+                  <div class="flex items-center gap-1">
+                    <button id="prevMes" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                    <button id="mesHoy" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300">Mes actual</button>
+                    <button id="nextMes" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-slate-400 mb-2">
+                  <span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span><span>DOM</span>
+                </div>
+                <div id="calGrid" class="grid grid-cols-7 gap-1.5 sm:gap-2"></div>
+              </div>
+              <div id="calSeleccion" class="hidden bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-slate-200/80 dark:border-zinc-800 shadow-sm anim-fade-up">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-3 mb-3">
+                  <h3 id="calSelTitulo" class="font-serif font-bold text-slate-900 dark:text-white capitalize"></h3>
+                  <button id="calSelBtnAgendar" class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-brand-600 hover:bg-brand-700 text-white flex items-center gap-1.5"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Agendar aquí</button>
+                </div>
+                <div id="calSelContenido" class="space-y-2"></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="view-slide" data-view="clientes">
+            <section id="view-clientes" class="space-y-4">
+              <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-zinc-800 shadow-sm anim-fade-up">
+                <div class="flex items-center justify-between mb-3 gap-2">
+                  <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 flex items-center justify-center"><i data-lucide="user-plus" class="w-4 h-4"></i></span>
+                    Nuevo cliente
+                  </h3>
+                  <button id="btnImportContacts" type="button" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"><i data-lucide="contact" class="w-3.5 h-3.5"></i> Importar</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                  <input type="text" id="nuevoClienteNombre" placeholder="Nombre completo *" autocomplete="name" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                  <input type="tel" id="nuevoClienteTel" placeholder="Teléfono / WhatsApp" inputmode="tel" autocomplete="tel" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                  <button id="btnAddCliente" type="button" class="sm:col-span-1 bg-slate-900 hover:bg-slate-800 dark:bg-brand-600 dark:hover:bg-brand-700 text-white font-medium text-sm rounded-xl py-2.5 flex items-center justify-center gap-1.5"><i data-lucide="plus" class="w-4 h-4"></i><span>Guardar</span></button>
+                </div>
+              </div>
+              <div class="relative anim-fade-up" style="animation-delay: 60ms">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none"></i>
+                <input type="text" id="buscarCliente" placeholder="Buscar cliente..." autocomplete="off" autocorrect="off" spellcheck="false" class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                <button id="btnLimpiarBusqueda" type="button" class="hidden absolute right-2.5 top-2.5 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-zinc-800"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+              </div>
+              <p id="clientesResumen" class="text-xs text-slate-500 dark:text-slate-400 font-medium px-1 anim-fade-up" style="animation-delay: 100ms"></p>
+              <div id="clientesList" class="space-y-4"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <section id="view-nueva" class="hidden max-w-2xl mx-auto">
+        <form id="formCita" class="bg-white dark:bg-zinc-900 rounded-2xl p-5 sm:p-7 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-4">
+            <div>
+              <h2 class="text-lg font-bold font-serif text-slate-900 dark:text-white">Programar Nueva Cita</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Completa la información para agendar</p>
+            </div>
+            <span class="p-2.5 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300"><i data-lucide="calendar-plus" class="w-5 h-5"></i></span>
+          </div>
+          <div id="avisoError" class="hidden p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs font-medium flex items-center gap-2 anim-fade-up"><i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i><span id="avisoErrorTxt"></span></div>
+          <div id="avisoOk" class="hidden p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-medium flex items-center gap-2 anim-pop"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0"></i><span id="avisoOkTxt"></span></div>
+
+          <div class="space-y-1.5">
+            <label for="selCliente" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Cliente *</label>
+            <select id="selCliente" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none"></select>
+          </div>
+
+          <div id="nuevoClienteInline" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-800/40 border border-slate-200 dark:border-zinc-800 anim-fade-up">
+            <div>
+              <label class="text-xs font-medium text-slate-500">Nombre completo *</label>
+              <input type="text" id="inlineNombre" placeholder="Ej. Ana María Gómez" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-medium text-slate-500">Teléfono (opcional)</label>
+              <input type="tel" id="inlineTel" placeholder="Ej. 555-0192" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="space-y-1.5">
+              <label for="inpFecha" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Fecha *</label>
+              <input type="date" id="inpFecha" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </div>
+            <div class="space-y-1.5">
+              <label for="inpHora" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Hora *</label>
+              <input type="time" id="inpHora" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </div>
+            <div class="space-y-1.5">
+              <label for="inpDuracion" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Duración</label>
+              <select id="inpDuracion" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                <option value="30">30 min</option>
+                <option value="45">45 min</option>
+                <option value="60" selected>1 hora</option>
+                <option value="90">1.5 horas</option>
+                <option value="120">2 horas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-2 border-t border-slate-100 dark:border-zinc-800 pt-4">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Servicios</label>
+              <button type="button" id="btnOpenAddServiceModal" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Administrar</button>
+            </div>
+            <div id="serviciosContainer" class="flex flex-wrap gap-2 py-1">
+              <p class="text-xs text-slate-400 italic py-1">Aún no hay servicios guardados. Agrega uno con el botón "Administrar".</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div class="sm:col-span-2 space-y-1">
+                <label for="inpServicio" class="text-xs font-medium text-slate-500 dark:text-slate-400">Servicio *</label>
+                <input type="text" id="inpServicio" placeholder="Escribe o selecciona arriba..." required class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+              </div>
+              <div class="space-y-1">
+                <label for="inpPrecio" class="text-xs font-medium text-slate-500 dark:text-slate-400">Precio ($)</label>
+                <input type="number" id="inpPrecio" min="0" step="1" placeholder="0" inputmode="numeric" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none font-semibold text-brand-600 dark:text-brand-400">
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="inpNotas" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Notas</label>
+            <textarea id="inpNotas" rows="2" placeholder="Preferencias, alergias..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 text-white font-semibold text-sm shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2">
+            <i data-lucide="check" class="w-4 h-4"></i> Agendar Cita
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="py-6 text-center text-xs text-slate-400 dark:text-slate-600 border-t border-slate-200/50 dark:border-zinc-900 mt-auto hidden sm:block">Agenda Fácil &copy; Prototipo de Gestión de Citas</footer>
+  </div>
+
+  <nav id="mobileNav" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-zinc-800 anim-nav safe-bottom">
+    <div class="grid grid-cols-4 max-w-md mx-auto">
+      <button type="button" data-tab="agenda" class="mobile-nav-btn active"><span class="mobile-nav-icon-bg"><i data-lucide="calendar" class="w-[18px] h-[18px]"></i></span><span>Agenda</span></button>
+      <button type="button" data-tab="todas" class="mobile-nav-btn"><span class="mobile-nav-icon-bg"><i data-lucide="list-todo" class="w-[18px] h-[18px]"></i></span><span>Citas</span></button>
+      <button type="button" data-tab="calendario" class="mobile-nav-btn"><span class="mobile-nav-icon-bg"><i data-lucide="calendar-days" class="w-[18px] h-[18px]"></i></span><span>Mes</span></button>
+      <button type="button" data-tab="clientes" class="mobile-nav-btn"><span class="mobile-nav-icon-bg"><i data-lucide="users" class="w-[18px] h-[18px]"></i></span><span>Clientes</span></button>
+    </div>
+  </nav>
+
+  <button id="fabNueva" type="button" aria-label="Nueva cita" class="sm:hidden fixed right-4 z-40 w-14 h-14 rounded-full bg-gradient-to-tr from-brand-600 to-brand-500 text-white shadow-2xl shadow-brand-600/40 flex items-center justify-center anim-fab" style="bottom: calc(96px + env(safe-area-inset-bottom, 0px));">
+    <i data-lucide="plus" class="w-6 h-6"></i>
+  </button>
+
+  <button id="installBtn" type="button"><i data-lucide="download" class="w-4 h-4"></i><span>Instalar app</span></button>
+
+  <div id="alphaIndex" class="alpha-index"></div>
+
+  <!-- ================= MODALES ================= -->
+
+  <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="settings" class="w-4 h-4 text-brand-500"></i> Ajustes</h3>
+        <button id="btnCloseSettings" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-5 space-y-5">
+        <div class="space-y-1.5">
+          <label for="settingsNegocio" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5"><i data-lucide="store" class="w-3.5 h-3.5"></i> Nombre del negocio</label>
+          <input type="text" id="settingsNegocio" placeholder="Ej. Estética Bella" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          <p class="text-[10px] text-slate-400">Aparecerá al final del mensaje de WhatsApp y en la app.</p>
+        </div>
+
+        <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <label for="settingsPais" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5"><i data-lucide="globe" class="w-3.5 h-3.5"></i> Código de país (WhatsApp)</label>
+          <select id="settingsPais" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            <option value="52">México (+52)</option>
+            <option value="1">Estados Unidos / Canadá (+1)</option>
+            <option value="34">España (+34)</option>
+            <option value="54">Argentina (+54)</option>
+            <option value="57">Colombia (+57)</option>
+            <option value="56">Chile (+56)</option>
+            <option value="51">Perú (+51)</option>
+            <option value="593">Ecuador (+593)</option>
+            <option value="502">Guatemala (+502)</option>
+            <option value="506">Costa Rica (+506)</option>
+            <option value="507">Panamá (+507)</option>
+          </select>
+          <p class="text-[10px] text-slate-400">Se usa si el teléfono tiene 10 dígitos. Números con código ya incluido se respetan.</p>
+        </div>
+
+        <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <label for="settingsWaTemplate" class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5"><i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i> Mensaje de WhatsApp</label>
+          <textarea id="settingsWaTemplate" rows="6" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm focus:ring-2 focus:ring-brand-500 outline-none font-mono text-[13px] leading-relaxed"></textarea>
+          <div class="pt-2">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Variables disponibles (toca para insertar)</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" class="var-chip" data-var="{nombre}">{nombre}</button>
+              <button type="button" class="var-chip" data-var="{fecha}">{fecha}</button>
+              <button type="button" class="var-chip" data-var="{hora}">{hora}</button>
+              <button type="button" class="var-chip" data-var="{servicio}">{servicio}</button>
+              <button type="button" class="var-chip" data-var="{precio}">{precio}</button>
+              <button type="button" class="var-chip" data-var="{negocio}">{negocio}</button>
+            </div>
+            <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">{nombre} = primer nombre del cliente · {fecha} = fecha completa · {hora} = hora formateada · {precio} = precio con $ · {negocio} = nombre del negocio.</p>
+          </div>
+          <button type="button" id="btnResetWaTemplate" class="text-xs font-semibold text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 flex items-center gap-1 mt-2"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restaurar mensaje por defecto</button>
+        </div>
+
+        <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Vista previa</p>
+          <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40">
+            <p id="waPreview" class="text-xs text-slate-700 dark:text-slate-200 whitespace-pre-wrap leading-relaxed"></p>
+          </div>
+        </div>
+
+        <!-- ============ NUEVO: DATOS Y RESPALDO ============ -->
+        <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5"><i data-lucide="database" class="w-3.5 h-3.5"></i> Datos y respaldo</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="btnExportJSON" class="py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-200 dark:hover:bg-zinc-700"><i data-lucide="download" class="w-3.5 h-3.5"></i> Respaldo JSON</button>
+            <button type="button" id="btnImportJSON" class="py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-200 dark:hover:bg-zinc-700"><i data-lucide="upload" class="w-3.5 h-3.5"></i> Restaurar JSON</button>
+            <button type="button" id="btnExportCSV" class="py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-emerald-100 dark:hover:bg-emerald-950/60"><i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Citas CSV</button>
+            <button type="button" id="btnExportICS" class="py-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-blue-100 dark:hover:bg-blue-950/60"><i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Calendario .ics</button>
+          </div>
+          <input type="file" id="importFileInput" accept=".json,application/json" class="hidden">
+          <p class="text-[10px] text-slate-400 leading-relaxed">Guarda un respaldo periódicamente. Si borras los datos del navegador, solo podrás recuperarlos importando un JSON exportado.</p>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button id="btnCancelSettings" type="button" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-sm">Cancelar</button>
+          <button id="btnSaveSettings" type="button" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="serviceModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-3">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-brand-500"></i> Servicios</h3>
+        <button id="btnCloseServiceModal" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-xs font-semibold uppercase text-slate-400">Agregar Nuevo</h4>
+        <div class="grid grid-cols-3 gap-2">
+          <input type="text" id="newServiceName" placeholder="Nombre" class="col-span-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+          <input type="number" id="newServicePrice" placeholder="Precio" inputmode="numeric" class="col-span-1 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+        </div>
+        <button id="btnSaveNewService" type="button" class="w-full py-2 bg-slate-900 dark:bg-brand-600 text-white rounded-xl text-xs font-semibold">Guardar</button>
+      </div>
+      <div class="border-t border-slate-100 dark:border-zinc-800 pt-3 space-y-2">
+        <h4 class="text-xs font-semibold uppercase text-slate-400">Existentes</h4>
+        <div id="modalServicesList" class="max-h-48 overflow-y-auto custom-scrollbar space-y-1.5 pr-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="editModal" class="fixed inset-0 z-[55] hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="edit-3" class="w-4 h-4 text-brand-500"></i> Editar Cita</h3>
+        <button id="btnCloseEditModal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Cliente</label>
+          <select id="editCliente" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></select>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="space-y-1.5"><label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Fecha</label><input type="date" id="editFecha" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></div>
+          <div class="space-y-1.5"><label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Hora</label><input type="time" id="editHora" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></div>
+          <div class="space-y-1.5"><label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Duración</label>
+            <select id="editDuracion" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none">
+              <option value="30">30 min</option><option value="45">45 min</option><option value="60">1 hora</option><option value="90">1.5 horas</option><option value="120">2 horas</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2 space-y-1.5"><label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Servicio</label><input type="text" id="editServicio" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></div>
+          <div class="space-y-1.5"><label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Precio</label><input type="number" id="editPrecio" min="0" inputmode="numeric" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none font-semibold text-brand-600 dark:text-brand-400"></div>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Estado</label>
+          <div class="grid grid-cols-3 gap-2" id="editEstadoGroup">
+            <button type="button" data-estado="pendiente" class="estado-btn py-2 rounded-xl text-xs font-semibold border transition">Pendiente</button>
+            <button type="button" data-estado="atendida" class="estado-btn py-2 rounded-xl text-xs font-semibold border transition">Atendida</button>
+            <button type="button" data-estado="cancelada" class="estado-btn py-2 rounded-xl text-xs font-semibold border transition">Cancelada</button>
+          </div>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">Notas</label>
+          <textarea id="editNotas" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/50 text-sm outline-none"></textarea>
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button id="btnCloseEditModal2" type="button" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-sm">Cancelar</button>
+          <button id="btnGuardarEdicion" type="button" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="clientModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div class="sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 p-5 z-10">
+        <h3 class="font-serif font-bold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-brand-500"></i> Ficha del cliente</h3>
+        <button id="btnCloseClientModal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div id="clientModalBody" class="p-5 space-y-4"></div>
+    </div>
+  </div>
+
+  <div id="deleteModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="anim-scale bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4">
+      <div class="flex items-start gap-3">
+        <span class="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 shrink-0"><i data-lucide="alert-triangle" class="w-5 h-5"></i></span>
+        <div>
+          <h3 id="deleteModalTitle" class="font-bold text-slate-900 dark:text-white text-base">¿Eliminar cita?</h3>
+          <p id="deleteModalDesc" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Esta acción no se puede deshacer.</p>
+        </div>
+      </div>
+      <div class="flex gap-2 pt-1">
+        <button id="btnCancelDelete" type="button" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 font-semibold text-sm">Cancelar</button>
+        <button id="btnConfirmDelete" type="button" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-sm flex items-center justify-center gap-2"><i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modoDia" class="fixed inset-0 z-[70] hidden bg-slate-50 dark:bg-zinc-950 overflow-y-auto custom-scrollbar">
+    <div class="max-w-3xl mx-auto p-4 pb-28 safe-top anim-slide-up-full">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Modo día ocupado</p>
+          <h2 id="modoDiaFecha" class="text-2xl font-bold font-serif gradient-title capitalize"></h2>
+        </div>
+        <button id="btnCerrarModoDia" class="p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-slate-300 shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="flex items-center justify-between bg-white dark:bg-zinc-900 p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-sm mb-4">
+        <button id="modoPrevDay" class="p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+        <button id="modoToday" class="px-4 py-2 rounded-lg bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-300 font-semibold text-sm">Hoy</button>
+        <button id="modoNextDay" class="p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+      </div>
+      <div id="modoDiaList" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <div id="toastContainer" role="status" aria-live="polite" class="fixed bottom-24 sm:bottom-4 right-4 z-[100] flex flex-col gap-2 items-end pointer-events-none max-w-[90vw]"></div>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
