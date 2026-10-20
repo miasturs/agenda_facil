@@ -88,11 +88,10 @@ No requiere instalación. Basta con abrir el archivo `index.html` en un navegado
 - **iOS y Safari:** utilizar la opción **Compartir** y seleccionar **Añadir a pantalla de inicio**.
 
 ## Estructura del proyecto
-`
+```text
 agenda-facil/
 ├── index.html      # Aplicación completa (HTML, CSS y JavaScript)
 └── README.md       # Documentación del proyecto
-`
 El proyecto se distribuye como un único archivo con el propósito de facilitar su despliegue en cualquier plataforma de hosting estático, como GitHub Pages, Netlify o Vercel, o incluso su apertura local.
 
 ## Tecnologías utilizadas
